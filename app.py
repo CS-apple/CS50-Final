@@ -14,5 +14,10 @@ def index():
     if request.method == "GET":
         return render_template("index.html")
 
+@app.route("/order", methods = ["GET", "POST"])
+def order():
+    if request.method == "GET":
+        return render_template("order.html")
+    
 if __name__ == "__main__":
     app.run(debug=True)

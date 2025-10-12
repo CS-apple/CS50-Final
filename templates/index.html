@@ -35,21 +35,53 @@
         </div>
         </nav>
     </header>
-            <img src="{{url_for('static', filename = 'img/glazed-donut-recipe-1-65008ab2b45fb.jpg')}" alt="artisanal donut">
         <!-- splash -->
-    <div class="p-5 mb-4 bg-light rounded-3">
-        <div>
-            <img src="/static/img/glazed-donut-recipe-1-65008ab2b45fb.jpg" alt="artisanal donut" class="img-fluid">
-        </div>
-        <div>
-            <h1 class="display-5 fw-bold">Welcome to My Website</h1>
-            <p class="col-md-8 fs-4">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            <button class="btn btn-primary btn-lg" type="button">Example button</button>
-        </div>
+    <div class="card text-bg-dark">
+            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" alt="artisanal donut" class="card-img">
+            <div class="ms-5 card-img-overlay d-flex align-items-center">
+                <div class="col-sm-3">
+                    <h3 class="card-title">Made fresh, every day</h3>
+                    <p class="card-text">We craft new flavors using seasonal ingredients sourced from our local farmers. </p>
+                    <button class="btn btn-primary btn-lg" type="button">Order a box</button>
+                </div>
+            </div>
     </div>
-        <h1>Welcome to My Website</h1>
-        <p>This is a basic HTML template.</p>
+    <!-- this weeks Specials -->
+     <div class="container mt-5">
+        <h3>This Week's Specials</h3>
+        <div class="row mt-5">
+           <div class="col-sm-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Lemon Glaze</h5>
+                        <p class="card-text">A "not too sweet" twist on a classic</p>
+                        <a href="#" class="btn btn-primary">order a box</a>
+                    </div>
+                </div>
+            </div>
+                       <div class="col-sm-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Lemon Glaze</h5>
+                        <p class="card-text">A "not too sweet" twist on a classic</p>
+                        <a href="#" class="btn btn-primary">order a box</a>
+                    </div>
+                </div>
+            </div>
+                       <div class="col-sm-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Lemon Glaze</h5>
+                        <p class="card-text">A "not too sweet" twist on a classic</p>
+                        <a href="#" class="btn btn-primary">order a box</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 
-</html>
+</html>   

@@ -5,6 +5,83 @@ Order
 {% endblock %}
 
 {% set active_page = 'order' %}
+{% set doughnuts = 0 %}
 
 {% block main %}
+<div class="container-sm">
+    <!-- order form  -->
+    <div class="card mt-5 mb-5 ">
+        <div class="card-header">
+            Create a box
+        </div>
+        <!-- box option1  -->
+        <div class = "card-body">
+            <div class="row">
+                <div class="col-4">
+                    <img src="{{ url_for('static', filename='box.png') }}" alt="Box Image" class="img-fluid mb-3" style="max-width: 200px;">
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title">Flavor</h5>
+                    <p class="card-text">Flavor description</p>
+                </div>
+                <div class="col-2">
+                    <form>
+                        <input type="number" class="form-control text-center" id="option1" value ="0" min="0" max="12" placeholder="0" style="max-width: 60px;">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- box option 2  -->
+        <div class = "card-body">
+            <div class="row">
+                <div class="col-4">
+                    <img src="{{ url_for('static', filename='box.png') }}" alt="Box Image" class="img-fluid mb-3" style="max-width: 200px;">
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title">Flavor</h5>
+                    <p class="card-text">Flavor description</p>
+                </div>
+                <div class="col-2">
+                    <form>
+                        <input type="number" class="form-control text-center" id="option2" value="0" min="0" max="12" placeholder="0" style="max-width: 60px;">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- box option 3  -->
+        <div class = "card-body">
+            <div class="row">
+                <div class="col-4">
+                    <img src="{{ url_for('static', filename='box.png') }}" alt="Box Image" class="img-fluid mb-3" style="max-width: 200px;">
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title">Flavor</h5>
+                    <p class="card-text">Flavor description</p>
+                </div>
+                <div class="col-2">
+                    <form>
+                        <input type="number" class="form-control text-center" id="option3" value="0" min="0" max="12" placeholder="0" style="max-width: 60px;">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Total doughnuts  -->
+        <div class="card-body">
+            <div class="row justify-content-end">
+                <div class="col-4 ">
+                    <h5 class="card-title" id="total">Total doughnuts: 0</h5>
+                    <p class="card-text" id="alert"></p>
+                </div>
+            </div>
+        </div> 
+        <!-- buttons  -->
+        <div class="card-footer text-end">
+            <div class="d-grid gap-2 d-md-block">
+                    <button class="btn btn-outline-primary col " disabled="true" type="submit">Need another box?</button>
+                    <button class="btn btn-primary col " disabled type="submit">add to cart</button>
+            </div>
+        </div>
+</div>
 {% endblock %}

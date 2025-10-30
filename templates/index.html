@@ -7,7 +7,7 @@ Home
 {% set active_page = 'home' %}
 
 {% block main %}
-       <!-- header images  -->
+ <!-- header images  -->
     <div class="container-xl">
         <div class="card text-bg-dark">
             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" alt="artisanal donut" class="card-img">
@@ -20,39 +20,76 @@ Home
             </div>
         </div>
     </div>
-    <!-- this weeks Specials -->
-     <div class="container-sm mt-5">
+<!-- this weeks Specials -->
+     <div class="container-sm mt-5 mb-5">
         <h3>This Week's Specials</h3>
         <div class="row mt-5 justify-content-between" >
            <div class="col-sm mb-3 ">
                 <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
+                    <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Lemon Glaze</h5>
                         <p class="card-text">A "not too sweet" twist on a classic</p>
-                        <a href="#" class="btn btn-primary">order a box</a>
                     </div>
                 </div>
             </div>
             <div class="col-sm mb-3">
                 <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
+                    <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Lemon Glaze</h5>
                         <p class="card-text">A "not too sweet" twist on a classic</p>
-                        <a href="#" class="btn btn-primary">order a box</a>
                     </div>
                 </div>
             </div>
             <div class="col-sm mb-3">
                 <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
+                    <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Lemon Glaze</h5>
                         <p class="card-text">A "not too sweet" twist on a classic</p>
-                        <a href="#" class="btn btn-primary">order a box</a>
+                    </div>
+                </div>
+            </div>
+           <div class="col-sm mb-3 ">
+                <div class="card">
+                    <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Lemon Glaze</h5>
+                        <p class="card-text">A "not too sweet" twist on a classic</p>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row justify-content-end">
+            <div class="col-md-3 text-end">
+                <a href="{{url_for('order')}}" class="btn btn-primary btn-lg mt-3" role="linkToOrder">  Order Now </a>
+            </div>
+        </div>
+    </div>
+<!--About us -->
+    <div class="container-sm my-5">
+        <div class="row">
+            <div class = col>
+                <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="...">
+            </div>
+            <div class="col">
+                <h3>About Us</h3>
+                <p>Founded in 2020, our mission is to bring joy to your taste buds with our handcrafted donuts made from the freshest ingredients. We believe that every bite should be a delightful experience, and we are committed to creating unique flavors that surprise and satisfy. Whether you're stopping by for a quick treat or ordering a box for a special occasion, we are here to make your day a little sweeter.</p>
+                <div class="row">
+                    <div class="col">
+                        <h5>Visit Us</h5>
+                        <p>123 Donut Lane<br>
+                        Sweet City, SC 12345<br>
+                        (123) 456-7890<br>
+                    </div>
+                    <div class="col">
+                        <h5>Hours</h5>
+                        <p>Monday - Friday:<br> 7:00 - 4:00 PM</p>
+                        <p>Saturday - Sunday:<br> 8:00 - 2:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

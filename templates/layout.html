@@ -28,11 +28,10 @@
                 <a class="nav-link {{'active' if active_page == 'order' else ' '}}" href="{{url_for('order')}}">Order</a>
                 </li>
             </ul>
-                <button class="btn btn-outline-primary me-2" type="submit">Log In</button>
-                <button class="btn btn-primary" type="submit">Cart
-                    <span class="badge bg-secondary">0</span>
-                </button>
-            </form>
+                <a href="templates/login.html" class="btn btn-secondary btn-lg me-2" role="LoginButton">Log In</a>
+                <a href="#" class="btn btn-primary btn-lg" role="CartButton">Cart 
+                    <span class=" badge bg-primary">0</span>
+                </a>
             </div>
         </div>
         </nav>
@@ -40,7 +39,7 @@
     {% block main %}
     
     {% endblock %}
-    <footer>
+    <footer class="mt-5">
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2025 Copyright:
             <a class="text-dark" href="#">michellindough.com</a>

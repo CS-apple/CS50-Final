@@ -26,7 +26,7 @@ Order
                 </div>
                 <div class="col-2">
                     <form>
-                        <input type="number" class="form-control text-center" id="option1" value ="0" min="0" max="12" placeholder="0" style="max-width: 60px;">
+                        <input type="number" class="form-control text-center" id="option1" oninput="val()" value ="0" min="0" max="12" placeholder="0" style="max-width: 60px;">
                     </form>
                 </div>
             </div>
@@ -62,7 +62,7 @@ Order
                 </div>
                 <div class="col-2">
                     <form>
-                        <input type="number" class="form-control text-center" id="option3" value="0" min="0" max="12" placeholder="0" style="max-width: 60px;">
+                        <input type="number"  id="option3" value="0" min="0" max="12" placeholder="0" class="form-control text-center" style="max-width: 60px;">
                     </form>
                 </div>
             </div>
@@ -71,8 +71,9 @@ Order
         <div class="card-body">
             <div class="row justify-content-end">
                 <div class="col-4 ">
-                    <h5 class="card-title" id="total">Total doughnuts: 0</h5>
+                    <h5 class="card-title" id="total">Total doughnuts: <span id="doughnutTotal">0</span></h5>
                     <p class="card-text" id="alert"></p>
+                    <p class="card-text" id="price">Price: $0.00</p>
                 </div>
             </div>
         </div> 

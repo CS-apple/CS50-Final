@@ -5,5 +5,49 @@ Register
 {% endblock %}
 
 {% block main %}
-
+<div class="container-sm mt-5"> 
+    <div class="card my-5 col-md-6 mx-auto">
+        <div class="card header">
+            <h3 class="ms-3 mt-3">Register</h3>
+        </div>
+        <div class="card-body col-10 mx-auto">
+            <form>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone number</label>
+                    <input type="tel" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Re-type Password</label>
+                    <input type="password" class="form-control">
+                </div>
+                <div class="row mb-3 justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                </div>
+                <div class="mb-3 text-center">
+                    <p> already have an account? 
+                        <a href="{{url_for('login')}}" class="btn btn-link p-0">Log in!</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

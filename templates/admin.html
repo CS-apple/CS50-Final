@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Log In
+Admin
 {% endblock %}
 
 {% block main %}
@@ -13,7 +13,7 @@ Log In
         <div class="card-body col-8 mx-auto">
             <form>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
+                    <label for="admin" class="form-label">Email address</label>
                     <input type="email" class="form-control">
                 </div>
                 <div class="mb-3">
@@ -22,11 +22,6 @@ Log In
                 </div>
                 <div class="row mb-3 justify-content-center">
                     <button type="submit" class="btn btn-primary btn-lg">Log in</button>
-                </div>
-                <div class="mb-3 text-center">
-                    <p> dont have an account? 
-                        <a href="{{url_for('register')}}" class="btn btn-link p-0">Register an account!</a>
-                    </p>
                 </div>
             </form>
         </div>

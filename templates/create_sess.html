@@ -1,22 +1,19 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Checkout
+Log In
 {% endblock %}
 
-{% set active_page = 'cart' %}
-
 {% block main %}
-<!-- Checkout page content goes here --> 
- <div class="container-sm mt-5"> 
+<div class="container-sm mt-5"> 
     <div class="row mb-5">
-        <h2 class="text-center">checkout</h2>
+        <h2 class="text-center">continue to checkout</h2>
     </div>
     <div class="row">
         <div class="col">
             <div class="card my-5 mx-auto">
                 <div class="card header">
-                    <h3 class="ms-3 mt-3">Order Details</h3>
+                    <h3 class="ms-3 mt-3">Log In</h3>
                 </div>
                 <div class="card-body mx-auto">
                     <form>
@@ -43,7 +40,7 @@
         <div class="col">
             <div class="card my-5 mx-auto">
                 <div class="card-header">
-                    <h3 class="">Continue as Guest</h3>
+                    <h3 class="ms-3 mt-3">Continue as Guest</h3>
                 </div>
                 <div class="card-body mx-auto">
                     <form>
@@ -51,7 +48,7 @@
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control">
                         </div>
-                            <div class="row mb-3 justify-content-center">
+                        <div class="row mb-3 justify-content-center">
                             <button type="submit" class="btn btn-primary btn-lg">Guest checkout</button>
                         </div>
                     </form>

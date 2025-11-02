@@ -46,18 +46,18 @@ def cart():
     if request.method == "GET":
         return render_template("cart.html")    
 
-@app.route("/cart", methods = ["GET","POST"])
-def cart():
+@app.route("/create_sess", methods = ["GET","POST"])
+def create_sess():
     if request.method == "GET":
-        return render_template("cart.html")  
+        return render_template("create_sess.html")  
 
 @app.route("/logged_checkout", methods = ["GET","POST"])
-def cart():
+def logged_checkout():
     if request.method == "GET":
         return render_template("logged_checkout.html")  
 
 @app.route("/guest_checkout", methods = ["GET","POST"])
-def cart():
+def guest_checkout():
     if request.method == "GET":
         return render_template("guest_checkout.html")  
 

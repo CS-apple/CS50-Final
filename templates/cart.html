@@ -1,12 +1,12 @@
-[% extends layout.html %]
+{% extends "layout.html" %}
 
-[% block title %]
+{% block title %}
     Cart
-[% endblock %]
+{% endblock %}
 
-[% set active_page = 'cart' %]
+{% set active_page = 'cart' %}
 
-[% block main %]
+{% block main %}
 
 <div class="container-sm mt-5 mb-5">
     <div class="card">
@@ -14,36 +14,62 @@
             <h3>Your Cart</h3>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class ="col">
+            <div class="row mt-3">
+                <div class ="d-flex justify-content-between align-items-center">
                     <h5>Item Name</h5>
                     <h5>$15.00</h5>
                 </div>
-                <div class ="col">
-                    <p>Doughnut</p>
-                    <p>3</p>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
                 </div>
-                <div class ="col">
-                    <p>Doughnut</p>
-                    <p>3</p>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
                 </div>
-                <div class ="col">
-                    <p>Doughnut</p>
-                    <p>3</p>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
                 </div> 
-                <div class ="col">
-                    <p>Doughnut</p>
-                    <p>3</p>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
                 </div>
-                <div class ="col">
+                <div class =" mt-2 col-4 justify-content-end align-items-center">
+                    <button class="btn btn-secondary">Edit</button>
+                    <button class="btn btn-danger">Remove</button> 
+                </div>      
+            </div>
+            <div class="row mt-3">
+                <div class ="d-flex justify-content-between align-items-center">
+                    <h5>Item Name</h5>
+                    <h5>$15.00</h5>
+                </div>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
+                </div>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
+                </div>
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
+                </div> 
+                <div class ="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">Doughnut</p>
+                    <p class="mb-0">3</p>
+                </div>
+                <div class =" mt-2 col-4 justify-content-end align-items-center">
                     <button class="btn btn-secondary">Edit</button>
                     <button class="btn btn-danger">Remove</button> 
                 </div>      
             </div>
         </div>
         <div class="card-footer text-end">
-            <h5>Total: $60.00</h5>
+            <h5>Total: $15.00</h5>
             <button class="btn btn-primary btn-lg">Checkout</button>
         </div>    
 
-[% endblock %]
+{% endblock %}

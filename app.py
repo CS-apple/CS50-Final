@@ -40,7 +40,27 @@ def register():
 def admin():
     if request.method == "GET":
         return render_template("admin.html")
-    
+
+@app.route("/cart", methods = ["GET","POST"])
+def cart():
+    if request.method == "GET":
+        return render_template("cart.html")    
+
+@app.route("/cart", methods = ["GET","POST"])
+def cart():
+    if request.method == "GET":
+        return render_template("cart.html")  
+
+@app.route("/logged_checkout", methods = ["GET","POST"])
+def cart():
+    if request.method == "GET":
+        return render_template("logged_checkout.html")  
+
+@app.route("/guest_checkout", methods = ["GET","POST"])
+def cart():
+    if request.method == "GET":
+        return render_template("guest_checkout.html")  
+
 
 if __name__ == "__main__":
     app.run(debug=True)

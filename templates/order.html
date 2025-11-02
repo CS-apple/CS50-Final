@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Order
+{% endblock %}
+
+{% set active_page = 'order' %}
+
+{% block main %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create a box</h1>
+                <p>Select your pick up date and mix and match 12 doughnuts for your box. 
+                If you need more, you can create additional boxes after this one.
+                All boxes must contain 12 doughnuts. All boxes are priced the same 
+                </p>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="row">
+                        <input type="date" name="pickup date">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-text"> Doughnut title </h5>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-text"> Doughnut title </h5>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-text"> Doughnut title </h5>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-text"> Doughnut title </h5>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-text"> Doughnut title </h5>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-text"> Doughnut title </h5>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <p>Doughnuts selected:</p>
+                         <p><strong><span id="DntTot">0</span></strong> /12</p>
+                    </div>
+                    <div>
+                        <p>Price per box:</p>
+                         <p><strong> $15.99<strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between col 4">
+                <button type= "submit" class="btn btn-secondary">need another box?</button>
+                <a href="{{url_for('cart')}}" class ="btn btn-primary btn-lg"> Add to cart</a>
+                <button type="submit" class="btn btn-primary">Add to cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

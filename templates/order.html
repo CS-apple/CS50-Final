@@ -21,13 +21,14 @@ Order
             <div class="card-body">
                 <div>
                     <div class="row">
+                        <label for="pickup date" class="form-label">Pick-up Date:</label>
                         <input type="date" name="pickup date">
                     </div>
                 </div>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4 mb-2">
+                    <div class="col-6 col-sm-4 mb-2">
                         <div class="card">
                             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -36,7 +37,7 @@ Order
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-4 mb-2">
+                    <div class="col-6 col-sm-4 mb-2">
                         <div class="card">
                             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -45,7 +46,7 @@ Order
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-4 mb-2">
+                    <div class="col-6 col-sm-4 mb-2">
                         <div class="card">
                             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -54,9 +55,7 @@ Order
                             </div> 
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-2">
+                    <div class="col-6 col-sm-4 mb-2">
                         <div class="card">
                             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -65,7 +64,7 @@ Order
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-4 mb-2">
+                    <div class="col-6 col-sm-4 mb-2">
                         <div class="card">
                             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -74,7 +73,7 @@ Order
                             </div> 
                         </div>
                     </div>
-                    <div class="col-md-4 mb-2">
+                    <div class="col-6 col-sm-4 mb-2">
                         <div class="card">
                             <img src="{{url_for('static', filename = 'img/donutHeader.jpg')}}" class="card-img-top" alt="">
                             <div class="card-body">
@@ -86,22 +85,24 @@ Order
                 </div>
             </div>
         <div class="card-footer">
-            <div class="row">
+            <div class="row justify-content-end">
                 <div class="col-md-6">
-                    <div>
-                        <p>Doughnuts selected:</p>
+                    <div class="d-flex flex-row justify-content-end" >
+                        <p>Doughnuts selected: </p>
                          <p><strong><span id="DntTot">0</span></strong> /12</p>
                     </div>
-                    <div>
-                        <p>Price per box:</p>
-                         <p><strong> $15.99<strong></p>
+                    <div class="d-flex flex-row justify-content-end">
+                        <p>Price per box: </p>
+                         <p><strong> $15.99</strong></p>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between col 4">
-                <button type= "submit" class="btn btn-secondary">need another box?</button>
-                <a href="{{url_for('cart')}}" class ="btn btn-primary btn-lg"> Add to cart</a>
-                <button type="submit" class="btn btn-primary">Add to cart</button>
+            <div class="col-6">
+                <div class="d-flex justify-content-end">
+                    <button type= "submit" class="btn btn-secondary">need another box?</button>
+                    <a href="{{url_for('cart')}}" class ="btn btn-primary btn-lg"> Add to cart</a>
+                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                </div> 
             </div>
         </div>
     </div>

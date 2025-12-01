@@ -5,7 +5,7 @@ if (document.readystate == 'loading') {
 }
 
 function ready() {
-console.log("Hello from tools.js");
+console.log("Hello from orders.js");
 //add even listeners for loaded content 
 const doughnutValues = document.getElementsByClassName("form-control");
     const cardFooter = document.getElementsByClassName("card-footer");
@@ -100,7 +100,7 @@ function collectActiveOrder(event){
     
 };
 
-export function addToCart(array){
+function addToCart(array){
     let orderSum = [];
     orderSum.push(array);
     console.log("InCart: ",orderSum);

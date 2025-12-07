@@ -141,9 +141,3 @@ function addToCart(order){
         //clear form inputs and reset total
     
 };
-
-/*function addToCart(array){
-    let orderSum = [];
-    orderSum.push(array);
-    console.log("InCart: ",orderSum);
-}*/

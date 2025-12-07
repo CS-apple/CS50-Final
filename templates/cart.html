@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% set active_page = 'cart' %}
-
+{% block head_include %}
+    <script type="module" src="{{ url_for('static', filename = 'cart.js')}}"></script>
+{% endblock %}
 {% block main %}
 
 <div class="container-sm mt-5 mb-5">

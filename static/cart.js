@@ -17,26 +17,6 @@ function ready(){
     updateTotalPrice();
 };
 
-function cartFunctions(event){
-    const button=event.target;
-    if (button.innerHTML=="Edit"){
-        editcartItem(event);
-    } else if (button.innerHTML=="Remove"){
-        removecartItem(event);
-    };
-};
-
-function editcartItem(event){
-    console.log("edit clicked");
-    //EDIT CART LINKS TO ORDER PAGE
-    //PREFILL ITEMS BASED ON CART DETAILS 
-};
-
-function removecartItem(event){
-    //add event listener for checkout button
-    console.log("remove clicked");
-    //REMOVE BUTTON DELETES CART ROW AND SESSION ITEM
-};
 
 function Checkout(event){
     console.log("checkout clicked");
@@ -106,28 +86,16 @@ function displayCartItem(cartRow){
         flavorList.appendChild(createFlavorItem(cartRow.items[i]));
     };
     //create cart buttons, append
+    const cartRowBtns = document.createElement('div');
+    cartRowBtns.classList.add('cart-btns', 'mt-2', 'col-4', 'justify-content-end', 'align-items-center')
+    const btns = `
+        <button class="btn btn-secondary">Edit</button>
+        <button class="btn btn-danger">Remove</button> 
+    `;
+    cartRowBtns.innerHTML = btns;
+    colBody.appendChild(cartRowBtns);
     //add event listeners to buttons 
-
-
-   /* const cartHeader = cart.getElementsByClassName('cart-body')[0];
-        const cartHeaderHTML = `
-        <div class ="Cart-item-header d-flex justify-content-between align-items-center">
-            <h5 class="name"></h5>
-            <h5 class="price">$15.00</h5>
-        </div>
-        `;
-    cartHeader.innerHTML = cartHeaderHTML;
-    let boxBreakdown = cart.getElementsByClassName('flavor-list')[0];
-    console.log("flavor list: ", boxBreakdown);
-    for (let i=0; i < cartRow.items.length; i++){
-        const flavor = `
-                <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                    <p class="flavor mb-0">${cartRow.items[i].flavor}</p>
-                    <p class="quantity mb-0">${cartRow.items[i].quantity}</p>
-                </li>                 
-        `; 
-        boxBreakdown.innerHTML = flavor;
-    }*/
+    addCartOptions(colBody);
 };
 function newBox(cartRow){
     const boxInfo = document.createElement('div');
@@ -150,6 +118,32 @@ function createFlavorItem(flavorData){
     boxItem.innerHTML = flavorItem;
     return boxItem; 
 };
+
+function addCartOptions(cartRow){
+    const cartBtns = cartRow.getElementsByClassName('cart-btns')[0];
+    const btns = cartBtns.getElementsByClassName('btn');
+    for (let i=0; i < btns.length; i++ ){
+        if (btns[i].innerHTML == 'Edit'){
+            btns[i].addEventListener('click', editcartItem)
+        } else if (btns[i].innerHTML == 'Remove'){
+            btns[i].addEventListener('click', removecartItem)
+        };
+    };
+};
+
+function editcartItem(event){
+    console.log("edit clicked");
+    //EDIT CART LINKS TO ORDER PAGE
+    //PREFILL ITEMS BASED ON CART DETAILS 
+};
+
+function removecartItem(event){
+    //add event listener for checkout button
+    console.log("remove clicked");
+    //REMOVE BUTTON DELETES CART ROW AND SESSION ITEM
+};
+
+    //add event listeners to buttons 
 /*        
     <div class="card-body">
         <div class="cart-row row">

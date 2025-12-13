@@ -17,41 +17,26 @@ function ready(){
     updateTotalPrice();
 };
 
-
 function Checkout(event){
     console.log("checkout clicked");
     //only enable checkout button when date is selected 
 //ENTER VALIDATION WITH FLASK
 };
 
-//CART ITEM OBJECT
-function CartItem(name,price,items){
-    this.name = name;
-    this.price = price;
-    this.items = items;
-};
-
-
 //RETRIEVE SESSION CART
 function retrieveCart(){
-    console.log("display cart items");
     //check if cart exists in session storage
     if(sessionStorage.getItem('cart') !== null){
     //grab cart      
-    let cart =JSON.parse( sessionStorage.getItem("cart"));
-    console.log("Cart items:", cart);
-    //create cart objects
-    for (let i=0; i < cart.length; i++){
-        let j = i+1;
-        const cartItem = new CartItem(
-             "Custom Box " + j,
-            15.00,
-            cart[i],
-        );
-        console.log("Cart Item Object:", cartItem);
-        displayCartItem(cartItem);
+        let cart= JSON.parse(sessionStorage.getItem('cart'));
+        // loop cart items
+        for ( let i = 0 ; i < cart.length; i++){
+            //create cart objects
+            let cartItem = cart[i];
+            displayCartItem(cartItem);
 
-    };
+        };
+        updateTotalPrice()
     } else {
         //show user their cart is empty
         console.log("Cart is empty");
@@ -61,15 +46,18 @@ function retrieveCart(){
         `;
         let cartBody = document.getElementsByClassName('card-body')
         cartBody[0].innerHTML= emptyCartHTML;
+        updateTotalPrice()
     };
 };
 
 //Display cart items in HTML
 function displayCartItem(cartRow){
+    console.log("cart item to diaplay");
     const cart = document.getElementsByClassName('card-body')[0];
     //create new row
     const row= document.createElement('div');
     row.classList.add('cartRow', 'row');
+    row.dataset.id = `${cartRow.id}`;
     cart.appendChild(row);
     //create col cart body, append
     const colBody = document.createElement('div');
@@ -149,45 +137,20 @@ function removecartItem(event){
     //
 };
 
-    //add event listeners to buttons 
-/*        
-    <div class="card-body">
-        <div class="cart-row row">
-            <div class="cart-body col mb-3">
-                <div class ="Cart-item-header d-flex justify-content-between align-items-center">
-                    <h5 class="name">Item Name</h5>
-                    <h5 class="price">$15.00</h5>
-                </div>
-                <div class ="cart-item-body">
-                    <ul class="flavor-list list-group list-group-flush">
-                        <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                            <p class="flavor mb-0">Doughnut</p>
-                            <p class="quantity mb-0">3</p>
-                        </li>
-                        <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                            <p class="flavor mb-0">Doughnut</p>
-                            <p class="quantity mb-0">3</p>
-                        </li>
-                        <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                            <p class="flavor mb-0">Doughnut</p>
-                            <p class="quantity mb-0">3</p>
-                        </li>                   
-                    </ul>
-                </div>
-                <div class ="cart-btns mt-2 col-4 justify-content-end align-items-center">
-                    <button class="btn btn-secondary">Edit</button>
-                    <button class="btn btn-danger">Remove</button> 
-                </div>   
-            </div>
-        </div>
-    </div>
-*/
-
-
-
 function updateTotalPrice(){
-    console.log("price updated");
+    let cart = JSON.parse(sessionStorage.getItem('cart'))
+    let price = 0.00
+    if(sessionStorage.getItem('cart') !== null){
+    //grab cart      
+        for (let i = 0; i < cart.length; i++) {
+
+        price += parseInt(cart[i].price);
+        };
+    let total = document.getElementById('Checkout-total');
+    total.innerHTML = price;
+    } else {
+         let total = document.getElementById('Checkout-total');
+        total.innerHTML = (price);   
+    }
 };
-
-
 

@@ -129,15 +129,100 @@ function collectActiveOrder(event){
     }
 };
 
-function addToCart(order){
-    //get json from local storage or create empty array
-    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    //push order to cart
-    cart.push(order);
-    //save updated cart to local
-    sessionStorage.setItem('cart', JSON.stringify(cart)) 
-    //if checkout button clicked, redirect to cart page
-        //if add another, save and stay on page
-        //clear form inputs and reset total
-    
+//CREATE ID COUNTER 
+
+function counter() {
+    let counter = JSON.parse(sessionStorage.getItem('counter') || 0);
+    if (sessionStorage.getItem('cart') !== null){
+        let cart = JSON.parse(sessionStorage.getItem('cart'));
+        for (let i = 0; i < cart.length; i++){
+            counter += 1;
+            console.log('counter:'+ counter);
+        };
+    };
+    sessionStorage.setItem('counter', JSON.stringify(counter))
+    return (JSON.parse(sessionStorage.getItem('counter')))
 };
+
+function boxname(){
+    if (sessionStorage.getItem('cart') !== null){
+        let cart =JSON.parse( sessionStorage.getItem("cart"));
+        let name = "Custom box " + (cart.length + 1);
+        return (name);
+    } else {
+        let name = "Custom box " + 1;
+        return (name);
+    }
+};
+
+//CART ITEM OBJECT
+function CartItem(id,name,price,items){
+    this.id = id;
+    this.name = name;
+    this.price = price;
+    this.items = items;
+};
+
+
+function addToCart(order){
+    if(sessionStorage.getItem('cart') !== null){
+        //grab cart      
+        let cart =JSON.parse( sessionStorage.getItem("cart"));
+        console.log("Cart items:", cart);
+        //create cart objects
+        let newOrder = new CartItem(
+            counter(),
+            boxname(),
+            15.00,
+            order,);
+        // save to local 
+        cart.push(newOrder);
+        sessionStorage.setItem('cart',JSON.stringify(cart));
+        console.log(newOrder);
+
+    }else{
+        let cart = [];
+        let newOrder = new CartItem(
+        counter(),
+        boxname(),
+        parseFloat(15.00),
+        order,);
+        console.log(newOrder);
+        cart.push(newOrder);
+        sessionStorage.setItem('cart',JSON.stringify(cart));
+    };
+};
+
+
+
+/*//RETRIEVE SESSION CART
+function retrieveCart(){
+    console.log("display cart items");
+    //check if cart exists in session storage
+    if(sessionStorage.getItem('cart') !== null){
+    //grab cart      
+    let cart =JSON.parse( sessionStorage.getItem("cart"));
+    console.log("Cart items:", cart);
+    //create cart objects
+    for (let i=0; i < cart.length; i++){
+        let j = i+1;
+        const cartItem = new CartItem(
+             "Custom Box " + j,
+            15.00,
+            cart[i],
+        );
+        console.log("Cart Item Object:", cartItem);
+        displayCartItem(cartItem);
+
+    };
+    } else {
+        //show user their cart is empty
+        console.log("Cart is empty");
+        const emptyCartHTML = `
+        <h5>Your cart is empty</h5>
+        <p>would you like to <a href="/order">create an order</a>?</p>
+        `;
+        let cartBody = document.getElementsByClassName('card-body')
+        cartBody[0].innerHTML= emptyCartHTML;
+    };
+};*/

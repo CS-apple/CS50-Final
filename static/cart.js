@@ -140,7 +140,13 @@ function editcartItem(event){
 function removecartItem(event){
     //add event listener for checkout button
     console.log("remove clicked");
+    console.log(event);
     //REMOVE BUTTON DELETES CART ROW AND SESSION ITEM
+    //target event, parent(cartbtns)
+    //parent , cart bod
+    //parennt row
+    //remove node
+    //
 };
 
     //add event listeners to buttons 

@@ -12,7 +12,7 @@ function ready(){
     const checkoutButton = document.getElementById("checkout-btn");
     checkoutButton.addEventListener('click', Checkout)
     //retrieve session cart and display items
-    retrieveCart();
+    renderCart(retrieveCart());
     //update total price
     updateTotalPrice();
 };
@@ -26,17 +26,25 @@ function Checkout(event){
 //RETRIEVE SESSION CART
 function retrieveCart(){
     //check if cart exists in session storage
-    if(sessionStorage.getItem('cart') !== null){
+    if(sessionStorage.getItem('cart') !== null && sessionStorage.getItem('cart').length != 0){
     //grab cart      
         let cart= JSON.parse(sessionStorage.getItem('cart'));
         // loop cart items
-        for ( let i = 0 ; i < cart.length; i++){
-            //create cart objects
-            let cartItem = cart[i];
-            displayCartItem(cartItem);
+        return cart;
+    };
+};
 
-        };
-        updateTotalPrice()
+
+//CART RENDER ROUTES
+function renderCart(cart){
+    if (cart != null && cart.length != 0){
+    for ( let i = 0 ; i < cart.length; i++){
+        //create cart objects
+        let cartItem = cart[i];
+        displayCartItem(cartItem);
+
+    };
+    updateTotalPrice()
     } else {
         //show user their cart is empty
         console.log("Cart is empty");
@@ -50,6 +58,8 @@ function retrieveCart(){
     };
 };
 
+
+
 //Display cart items in HTML
 function displayCartItem(cartRow){
     console.log("cart item to diaplay");
@@ -57,7 +67,7 @@ function displayCartItem(cartRow){
     //create new row
     const row= document.createElement('div');
     row.classList.add('cartRow', 'row');
-    row.dataset.id = `${cartRow.id}`;
+    row.dataset.boxId = `${cartRow.id}`;
     cart.appendChild(row);
     //create col cart body, append
     const colBody = document.createElement('div');
@@ -77,14 +87,15 @@ function displayCartItem(cartRow){
     const cartRowBtns = document.createElement('div');
     cartRowBtns.classList.add('cart-btns', 'mt-2', 'col-4', 'justify-content-end', 'align-items-center')
     const btns = `
-        <button class="btn btn-secondary">Edit</button>
-        <button class="btn btn-danger">Remove</button> 
+        <button href='/order' data-box-id="${cartRow.id}" class="btn btn-secondary">Edit</button>
+        <button data-box-id="${cartRow.id}" class="btn btn-danger">Remove</button> 
     `;
     cartRowBtns.innerHTML = btns;
     colBody.appendChild(cartRowBtns);
     //add event listeners to buttons 
     addCartOptions(colBody);
 };
+
 function newBox(cartRow){
     const boxInfo = document.createElement('div');
         boxInfo.classList.add('Cart-item-header', 'd-flex', 'justify-content-between', 'align-items-center')
@@ -119,26 +130,72 @@ function addCartOptions(cartRow){
     };
 };
 
+//FILTER JSON 
+
 function editcartItem(event){
-    console.log("edit clicked");
-    //EDIT CART LINKS TO ORDER PAGE
-    //PREFILL ITEMS BASED ON CART DETAILS 
+    //add event listener for checkout button
+    let boxId = event.target.dataset.boxId;
+    let storedCart = JSON.parse(sessionStorage.getItem('cart'));
+    let rows = document.querySelectorAll('.cartRow');
+    let cartToEdit = [];
+    let update = [];
+   //check though rows and match to button ID
+    for (let i=0; i<rows.length; i++){
+        if (boxId == rows[i].dataset.boxId){
+            //remove box from cart
+                update = storedCart.filter(function(item){
+                if(boxId != item.id)
+                    return item
+                })
+            console.log(' keep') + console.log(update)
+        };
+    };
+    for (let i=0; i<rows.length; i++){
+        if (boxId == rows[i].dataset.boxId){
+        //remove box from cart
+        cartToEdit = storedCart.filter(function(item){
+            if(boxId == item.id)
+                return item
+            });
+        console.log('edit') + console.log(cartToEdit)
+        };
+    };
+            sessionStorage.setItem('tempCartItem',JSON.stringify(cartToEdit));
+            sessionStorage.setItem('cart',JSON.stringify(update));
+            window.location.href = "order";
 };
 
 function removecartItem(event){
     //add event listener for checkout button
-    console.log("remove clicked");
-    console.log(event);
-    //REMOVE BUTTON DELETES CART ROW AND SESSION ITEM
-    //target event, parent(cartbtns)
-    //parent , cart bod
-    //parennt row
-    //remove node
-    //
+    let boxId = event.target.dataset.boxId;
+    let storedCart = JSON.parse(sessionStorage.getItem('cart'));
+    let rows = document.querySelectorAll('.cartRow');
+   //check though rows and match to button ID
+    for (let i=0; i<rows.length; i++){
+        if (boxId == rows[i].dataset.boxId){
+            //find matching json index
+            let update = storedCart.filter(function(item){
+            if(boxId != item.id)
+                return item
+            })
+            console.log(update)
+            sessionStorage.setItem('cart',JSON.stringify(update));
+            refreshCart();
+            renderCart(retrieveCart());
+            updateTotalPrice();
+        };
+    };
 };
 
+
+//REFRESH CART
+function refreshCart(){
+  let body = document.querySelector('.card-body');
+    body.innerHTML = '';
+}
+
 function updateTotalPrice(){
-    let cart = JSON.parse(sessionStorage.getItem('cart'))
+    let cart = retrieveCart();
     let price = 0.00
     if(sessionStorage.getItem('cart') !== null){
     //grab cart      

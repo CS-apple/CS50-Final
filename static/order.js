@@ -25,6 +25,7 @@ const doughnutValues = document.getElementsByClassName("form-control");
         checkoutButtons[i].addEventListener("click", collectActiveOrder);
     };
     getDoughnutTotal();
+    onEdit();
 };
 
 
@@ -193,7 +194,38 @@ function addToCart(order){
     };
 };
 
+function onEdit(){
+    //check if cart exists in session storage
+    if(sessionStorage.getItem('tempCartItem') !== null && sessionStorage.getItem('tempCartItem').length != 0){
+    //grab cart      
+        let editCart= JSON.parse(sessionStorage.getItem('tempCartItem'));
+        // loop cart items
+        
+        editOrder(editCart);
+    };
+};
 
+function editOrder(cartData) {
+    console.log('refill order form wwith Json data')
+    // get all option card info 
+    let flavors = document.querySelectorAll('.flavor');
+    //match json name to flavor
+    for (let i = 0; i < flavors.length; i++){
+        let flavor = flavors[i].querySelector('.card-text');
+        console.log(flavor.innerHTML);
+        for (let j = 0; j < cartData[0].items.length; j++){ 
+        console.log(cartData[0].items[j].flavor);
+            if (flavor.innerHTML === cartData[0].items[j].flavor){
+                //if match get value from cart data update ofrm data 
+                let value = cartData[0].items[j].quantity;
+                console.log(value);
+            };
+        };
+
+        //if match update value 
+    
+    };
+};
 
 /*//RETRIEVE SESSION CART
 function retrieveCart(){

@@ -88,20 +88,24 @@ function flashMessage(x){
     };
 };
 
+function Doughnut(flavor, quantity){
+    this.flavor = "",
+    this.quantity = 0
+}
 
-const doughnut = {
+/*const doughnut = {
     flavor:"",
     quantity: 0,
-};
+};*/
 
 function collectActiveOrder(event){
     let activeOrder = [];
     const flavorOption = document.getElementsByClassName("flavor");
     for (let i=0; i<flavorOption.length; i++){
         if (flavorOption[i].getElementsByClassName("form-control")[0].value > 0){
-            const orderItem= Object.create(doughnut);
-            orderItem.flavor = flavorOption[i].getElementsByClassName("card-text")[0].innerText;
-            orderItem.quantity = flavorOption[i].getElementsByClassName("form-control")[0].value;
+            const orderItem= new Doughnut();
+                orderItem.flavor = flavorOption[i].getElementsByClassName("card-text")[0].innerText;
+                orderItem.quantity = flavorOption[i].getElementsByClassName("form-control")[0].value;
             activeOrder.push(orderItem);
         };
     };
@@ -174,7 +178,7 @@ function addToCart(order){
         let newOrder = new CartItem(
             counter(),
             boxname(),
-            15.00,
+            15.99,
             order,);
         // save to local 
         cart.push(newOrder);
@@ -186,7 +190,7 @@ function addToCart(order){
         let newOrder = new CartItem(
         counter(),
         boxname(),
-        parseFloat(15.00),
+        parseFloat(15.99),
         order,);
         console.log(newOrder);
         cart.push(newOrder);
@@ -228,7 +232,7 @@ function editOrder(cartData) {
         };
     };
     getDoughnutTotal();
-    collectActiveOrder();
+    sessionStorage.removeitem('tempCartItem');
 };
 
 /*//RETRIEVE SESSION CART

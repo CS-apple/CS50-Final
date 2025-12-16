@@ -201,7 +201,7 @@ function updateTotalPrice(){
     //grab cart      
         for (let i = 0; i < cart.length; i++) {
 
-        price += parseInt(cart[i].price);
+        price += parseFloat(cart[i].price);
         };
     let total = document.getElementById('Checkout-total');
     total.innerHTML = price;

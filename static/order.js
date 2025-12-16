@@ -217,14 +217,18 @@ function editOrder(cartData) {
         console.log(cartData[0].items[j].flavor);
             if (flavor.innerHTML === cartData[0].items[j].flavor){
                 //if match get value from cart data update ofrm data 
-                let value = cartData[0].items[j].quantity;
-                console.log(value);
+                let editValue = cartData[0].items[j].quantity;
+                console.log(editValue);
+                //change html value to value 
+                let orderQuantity = flavors[i].querySelector('.form-control');
+                orderQuantity.value = '';
+                orderQuantity.value = editValue;
+
             };
         };
-
-        //if match update value 
-    
     };
+    getDoughnutTotal();
+    collectActiveOrder();
 };
 
 /*//RETRIEVE SESSION CART

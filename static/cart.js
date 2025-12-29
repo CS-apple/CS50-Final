@@ -7,14 +7,30 @@ if (document.readyState == 'loading') {
 
 function ready(){
     console.log("Hello from cart.js");
-        //add event llisteners for edit and remove buttons
     //add event listener for checkout button
     const checkoutButton = document.getElementById("checkout-btn");
     checkoutButton.addEventListener('click', Checkout)
+    //add event listener for date input 
+    dateEventListener();
     //retrieve session cart and display items
     renderCart(retrieveCart());
     //update total price
     updateTotalPrice();
+    //date default today 
+    defaultToday();
+};
+
+//ENABLE CHECKOUT BUTTON 
+function EnableCheckout(status){
+    console.log("checkout enabled");
+    const checkoutButton = document.getElementById("checkout-btn");
+    checkoutButton.disabled = true;
+    if (status != true){
+        checkoutButton.disabled = true;
+        return;
+    } 
+    checkoutButton.disabled = false;
+
 };
 
 function Checkout(event){
@@ -96,6 +112,7 @@ function displayCartItem(cartRow){
     addCartOptions(colBody);
 };
 
+//DIV CART ITEM
 function newBox(cartRow){
     const boxInfo = document.createElement('div');
         boxInfo.classList.add('Cart-item-header', 'd-flex', 'justify-content-between', 'align-items-center')
@@ -107,6 +124,7 @@ function newBox(cartRow){
         return boxInfo;
 }; 
 
+//FLAVOR LIST ITEM
 function createFlavorItem(flavorData){
     const boxItem = document.createElement('li');
     boxItem.classList.add('flavor-item', 'list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
@@ -118,6 +136,7 @@ function createFlavorItem(flavorData){
     return boxItem; 
 };
 
+//CART BUTTONS EVENT LISTENERS
 function addCartOptions(cartRow){
     const cartBtns = cartRow.getElementsByClassName('cart-btns')[0];
     const btns = cartBtns.getElementsByClassName('btn');
@@ -130,8 +149,8 @@ function addCartOptions(cartRow){
     };
 };
 
-//FILTER JSON 
-
+ 
+//EDIT CART ITEMS
 function editcartItem(event){
     //add event listener for checkout button
     let boxId = event.target.dataset.boxId;
@@ -165,6 +184,7 @@ function editcartItem(event){
             window.location.href = "order";
 };
 
+//REMOVE CART ITEMS
 function removecartItem(event){
     //add event listener for checkout button
     let boxId = event.target.dataset.boxId;
@@ -194,6 +214,7 @@ function refreshCart(){
     body.innerHTML = '';
 }
 
+//UPDATE PRICE
 function updateTotalPrice(){
     let cart = retrieveCart();
     let price = 0.00
@@ -209,5 +230,54 @@ function updateTotalPrice(){
          let total = document.getElementById('Checkout-total');
         total.innerHTML = (price);   
     }
+};
+
+//change date input to todays date as default, call when ready 
+//add event lstender change to date input, call when ready
+//calidate date selected is not before today 
+// date selected must be within a week
+// if date selected is valid, enable checkout button 
+
+//DATEPICKER DEFAULTS TODAY
+function defaultToday() {
+    let date = document.getElementById('pickup-date');
+    date.valueAsDate = new Date();
+};
+
+
+//Date event listener, called in ready function
+function dateEventListener(){
+    let date = document.getElementById('pickup-date');
+    date.addEventListener('change', pickupDate);
+}
+
+//PICKUPDATE UPDATED
+function pickupDate(event){
+    console.log(event.target.value)
+    let dateInput = validDate(event.target.value);
+    if (dateInput != true){
+        console.log('invalid date');
+        //should show message to user 
+        EnableCheckout(validDate(event.target.value));
+        defaultToday();
+        return;
+    };
+    EnableCheckout(validDate(event.target.value));
+    console.log('date changed');
+};
+
+//pickupdate validation 
+function validDate(dateInput){
+    let today = new Date();
+    let dateMax = new Date();
+    dateMax.setDate(today.getDate() + 10);
+    let formatDateMax = dateMax.toISOString();
+    let formatDateMin = today.toISOString();
+    console.log(formatDateMin);
+    console.log(formatDateMax);
+    if (formatDateMin < dateInput && dateInput <= formatDateMax){
+        return true;
+    } 
+    return false;
 };
 

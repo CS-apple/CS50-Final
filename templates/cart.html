@@ -24,15 +24,14 @@
         </div>
         <div class="card-footer">
             <div class="row mb-3 justify-content-end align-items-center">
-                <div id="flash" class="col-sm-4 text-end text-danger"> </div>
-                <div class="col-md-4 d-flex justify-content-between "> 
-                    <div class="w-100 me-2">
-                        <label for="pickup date" class="form-label">Pick-up Date:</label>
+                <div class="col-md-4 justify-content-between "> 
+                    <div class="w-100 me-2 pb-2">
+                        <label for="pickup date" class="form-label">Select a date up to 10 days in advance.</label>
                         <input type="date" id="pickup-date" class="form-control " name="pickup date" required> 
-
                     </div>
+                    <div id="flash" class="text-end text-danger pb-2"> </div>
                     <div class="w-100">
-                        <h5 class="mb-2">Total: $<span id="Checkout-total"></span></h5>
+                        <h5 class="mb-3 text-end">Total: $<span id="Checkout-total"></span></h5>
                         <button id="checkout-btn" class="btn btn-primary btn-lg w-100" disabled>Checkout</button>
                     </div>
                 

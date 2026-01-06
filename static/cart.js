@@ -22,7 +22,6 @@ function ready(){
 
 //ENABLE CHECKOUT BUTTON 
 function EnableCheckout(status){
-    console.log("checkout enabled");
     const checkoutButton = document.getElementById("checkout-btn");
     checkoutButton.disabled = true;
     if (status != true){
@@ -30,12 +29,14 @@ function EnableCheckout(status){
         return;
     } 
     checkoutButton.disabled = false;
-
 };
 
+//CHECKOUT AND SEND TO BACK
 function Checkout(event){
     console.log("checkout clicked");
-    //only enable checkout button when date is selected 
+    //GET OPEN JSON AND ADD PICK UP DATE
+    //VALIDATE NAMES MATCH DB NAMES 
+    //MUST HAVE 
 //ENTER VALIDATION WITH FLASK
 };
 
@@ -255,9 +256,13 @@ function dateEventListener(){
 function pickupDate(event){
     console.log(event.target.value)
     let dateInput = validDate(event.target.value);
+    const flash = document.getElementById('flash');
+    let message= document.createElement('p');
     if (dateInput != true){
         console.log('invalid date');
-        //should show message to user 
+        //should show message to user
+        message.textContent = "Please pick a day within the next 10 days.";
+        flash.appendChild(message);
         EnableCheckout(validDate(event.target.value));
         defaultToday();
         return;

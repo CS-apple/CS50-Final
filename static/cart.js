@@ -7,51 +7,61 @@ if (document.readyState == 'loading') {
 
 function ready(){
     console.log("Hello from cart.js");
-        //add event llisteners for edit and remove buttons
     //add event listener for checkout button
     const checkoutButton = document.getElementById("checkout-btn");
     checkoutButton.addEventListener('click', Checkout)
+    //add event listener for date input 
+    dateEventListener();
     //retrieve session cart and display items
-    retrieveCart();
+    renderCart(retrieveCart());
     //update total price
     updateTotalPrice();
+    //date default today 
+    defaultToday();
 };
 
+//ENABLE CHECKOUT BUTTON 
+function EnableCheckout(status){
+    const checkoutButton = document.getElementById("checkout-btn");
+    checkoutButton.disabled = true;
+    if (status != true){
+        checkoutButton.disabled = true;
+        return;
+    } 
+    checkoutButton.disabled = false;
+};
 
+//CHECKOUT AND SEND TO BACK
 function Checkout(event){
     console.log("checkout clicked");
-    //only enable checkout button when date is selected 
+    //GET OPEN JSON AND ADD PICK UP DATE
+    //VALIDATE NAMES MATCH DB NAMES 
+    //MUST HAVE 
 //ENTER VALIDATION WITH FLASK
 };
 
-//CART ITEM OBJECT
-function CartItem(name,price,items){
-    this.name = name;
-    this.price = price;
-    this.items = items;
+//RETRIEVE SESSION CART
+function retrieveCart(){
+    //check if cart exists in session storage
+    if(sessionStorage.getItem('cart') !== null && sessionStorage.getItem('cart').length != 0){
+    //grab cart      
+        let cart= JSON.parse(sessionStorage.getItem('cart'));
+        // loop cart items
+        return cart;
+    };
 };
 
 
-//RETRIEVE SESSION CART
-function retrieveCart(){
-    console.log("display cart items");
-    //check if cart exists in session storage
-    if(sessionStorage.getItem('cart') !== null){
-    //grab cart      
-    let cart =JSON.parse( sessionStorage.getItem("cart"));
-    console.log("Cart items:", cart);
-    //create cart objects
-    for (let i=0; i < cart.length; i++){
-        let j = i+1;
-        const cartItem = new CartItem(
-             "Custom Box " + j,
-            15.00,
-            cart[i],
-        );
-        console.log("Cart Item Object:", cartItem);
+//CART RENDER ROUTES
+function renderCart(cart){
+    if (cart != null && cart.length != 0){
+    for ( let i = 0 ; i < cart.length; i++){
+        //create cart objects
+        let cartItem = cart[i];
         displayCartItem(cartItem);
 
     };
+    updateTotalPrice()
     } else {
         //show user their cart is empty
         console.log("Cart is empty");
@@ -61,15 +71,20 @@ function retrieveCart(){
         `;
         let cartBody = document.getElementsByClassName('card-body')
         cartBody[0].innerHTML= emptyCartHTML;
+        updateTotalPrice()
     };
 };
 
+
+
 //Display cart items in HTML
 function displayCartItem(cartRow){
+    console.log("cart item to diaplay");
     const cart = document.getElementsByClassName('card-body')[0];
     //create new row
     const row= document.createElement('div');
     row.classList.add('cartRow', 'row');
+    row.dataset.boxId = `${cartRow.id}`;
     cart.appendChild(row);
     //create col cart body, append
     const colBody = document.createElement('div');
@@ -89,14 +104,16 @@ function displayCartItem(cartRow){
     const cartRowBtns = document.createElement('div');
     cartRowBtns.classList.add('cart-btns', 'mt-2', 'col-4', 'justify-content-end', 'align-items-center')
     const btns = `
-        <button class="btn btn-secondary">Edit</button>
-        <button class="btn btn-danger">Remove</button> 
+        <button href='/order' data-box-id="${cartRow.id}" class="btn btn-secondary">Edit</button>
+        <button data-box-id="${cartRow.id}" class="btn btn-danger">Remove</button> 
     `;
     cartRowBtns.innerHTML = btns;
     colBody.appendChild(cartRowBtns);
     //add event listeners to buttons 
     addCartOptions(colBody);
 };
+
+//DIV CART ITEM
 function newBox(cartRow){
     const boxInfo = document.createElement('div');
         boxInfo.classList.add('Cart-item-header', 'd-flex', 'justify-content-between', 'align-items-center')
@@ -108,6 +125,7 @@ function newBox(cartRow){
         return boxInfo;
 }; 
 
+//FLAVOR LIST ITEM
 function createFlavorItem(flavorData){
     const boxItem = document.createElement('li');
     boxItem.classList.add('flavor-item', 'list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
@@ -119,6 +137,7 @@ function createFlavorItem(flavorData){
     return boxItem; 
 };
 
+//CART BUTTONS EVENT LISTENERS
 function addCartOptions(cartRow){
     const cartBtns = cartRow.getElementsByClassName('cart-btns')[0];
     const btns = cartBtns.getElementsByClassName('btn');
@@ -131,63 +150,139 @@ function addCartOptions(cartRow){
     };
 };
 
+ 
+//EDIT CART ITEMS
 function editcartItem(event){
-    console.log("edit clicked");
-    //EDIT CART LINKS TO ORDER PAGE
-    //PREFILL ITEMS BASED ON CART DETAILS 
+    //add event listener for checkout button
+    let boxId = event.target.dataset.boxId;
+    let storedCart = JSON.parse(sessionStorage.getItem('cart'));
+    let rows = document.querySelectorAll('.cartRow');
+    let cartToEdit = [];
+    let update = [];
+   //check though rows and match to button ID
+    for (let i=0; i<rows.length; i++){
+        if (boxId == rows[i].dataset.boxId){
+            //remove box from cart
+                update = storedCart.filter(function(item){
+                if(boxId != item.id)
+                    return item
+                })
+            console.log(' keep') + console.log(update)
+        };
+    };
+    for (let i=0; i<rows.length; i++){
+        if (boxId == rows[i].dataset.boxId){
+        //remove box from cart
+        cartToEdit = storedCart.filter(function(item){
+            if(boxId == item.id)
+                return item
+            });
+        console.log('edit') + console.log(cartToEdit)
+        };
+    };
+            sessionStorage.setItem('tempCartItem',JSON.stringify(cartToEdit));
+            sessionStorage.setItem('cart',JSON.stringify(update));
+            window.location.href = "order";
 };
 
+//REMOVE CART ITEMS
 function removecartItem(event){
     //add event listener for checkout button
-    console.log("remove clicked");
-    console.log(event);
-    //REMOVE BUTTON DELETES CART ROW AND SESSION ITEM
-    //target event, parent(cartbtns)
-    //parent , cart bod
-    //parennt row
-    //remove node
-    //
+    let boxId = event.target.dataset.boxId;
+    let storedCart = JSON.parse(sessionStorage.getItem('cart'));
+    let rows = document.querySelectorAll('.cartRow');
+   //check though rows and match to button ID
+    for (let i=0; i<rows.length; i++){
+        if (boxId == rows[i].dataset.boxId){
+            //find matching json index
+            let update = storedCart.filter(function(item){
+            if(boxId != item.id)
+                return item
+            })
+            console.log(update)
+            sessionStorage.setItem('cart',JSON.stringify(update));
+            refreshCart();
+            renderCart(retrieveCart());
+            updateTotalPrice();
+        };
+    };
 };
 
-    //add event listeners to buttons 
-/*        
-    <div class="card-body">
-        <div class="cart-row row">
-            <div class="cart-body col mb-3">
-                <div class ="Cart-item-header d-flex justify-content-between align-items-center">
-                    <h5 class="name">Item Name</h5>
-                    <h5 class="price">$15.00</h5>
-                </div>
-                <div class ="cart-item-body">
-                    <ul class="flavor-list list-group list-group-flush">
-                        <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                            <p class="flavor mb-0">Doughnut</p>
-                            <p class="quantity mb-0">3</p>
-                        </li>
-                        <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                            <p class="flavor mb-0">Doughnut</p>
-                            <p class="quantity mb-0">3</p>
-                        </li>
-                        <li class="flavor-item list-group-item d-flex justify-content-between align-items-center">
-                            <p class="flavor mb-0">Doughnut</p>
-                            <p class="quantity mb-0">3</p>
-                        </li>                   
-                    </ul>
-                </div>
-                <div class ="cart-btns mt-2 col-4 justify-content-end align-items-center">
-                    <button class="btn btn-secondary">Edit</button>
-                    <button class="btn btn-danger">Remove</button> 
-                </div>   
-            </div>
-        </div>
-    </div>
-*/
 
+//REFRESH CART
+function refreshCart(){
+  let body = document.querySelector('.card-body');
+    body.innerHTML = '';
+}
 
-
+//UPDATE PRICE
 function updateTotalPrice(){
-    console.log("price updated");
+    let cart = retrieveCart();
+    let price = 0.00
+    if(sessionStorage.getItem('cart') !== null){
+    //grab cart      
+        for (let i = 0; i < cart.length; i++) {
+
+        price += parseFloat(cart[i].price);
+        };
+    let total = document.getElementById('Checkout-total');
+    total.innerHTML = price;
+    } else {
+         let total = document.getElementById('Checkout-total');
+        total.innerHTML = (price);   
+    }
+};
+
+//change date input to todays date as default, call when ready 
+//add event lstender change to date input, call when ready
+//calidate date selected is not before today 
+// date selected must be within a week
+// if date selected is valid, enable checkout button 
+
+//DATEPICKER DEFAULTS TODAY
+function defaultToday() {
+    let date = document.getElementById('pickup-date');
+    date.valueAsDate = new Date();
 };
 
 
+//Date event listener, called in ready function
+function dateEventListener(){
+    let date = document.getElementById('pickup-date');
+    date.addEventListener('change', pickupDate);
+}
+
+//PICKUPDATE UPDATED
+function pickupDate(event){
+    console.log(event.target.value)
+    let dateInput = validDate(event.target.value);
+    const flash = document.getElementById('flash');
+    let message= document.createElement('p');
+    if (dateInput != true){
+        console.log('invalid date');
+        //should show message to user
+        message.textContent = "Please pick a day within the next 10 days.";
+        flash.appendChild(message);
+        EnableCheckout(validDate(event.target.value));
+        defaultToday();
+        return;
+    };
+    EnableCheckout(validDate(event.target.value));
+    console.log('date changed');
+};
+
+//pickupdate validation 
+function validDate(dateInput){
+    let today = new Date();
+    let dateMax = new Date();
+    dateMax.setDate(today.getDate() + 10);
+    let formatDateMax = dateMax.toISOString();
+    let formatDateMin = today.toISOString();
+    console.log(formatDateMin);
+    console.log(formatDateMax);
+    if (formatDateMin < dateInput && dateInput <= formatDateMax){
+        return true;
+    } 
+    return false;
+};
 

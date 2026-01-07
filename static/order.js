@@ -25,6 +25,7 @@ const doughnutValues = document.getElementsByClassName("form-control");
         checkoutButtons[i].addEventListener("click", collectActiveOrder);
     };
     getDoughnutTotal();
+    onEdit();
 };
 
 
@@ -87,20 +88,24 @@ function flashMessage(x){
     };
 };
 
+function Doughnut(flavor, quantity){
+    this.flavor = "",
+    this.quantity = 0
+}
 
-const doughnut = {
+/*const doughnut = {
     flavor:"",
     quantity: 0,
-};
+};*/
 
 function collectActiveOrder(event){
     let activeOrder = [];
     const flavorOption = document.getElementsByClassName("flavor");
     for (let i=0; i<flavorOption.length; i++){
         if (flavorOption[i].getElementsByClassName("form-control")[0].value > 0){
-            const orderItem= Object.create(doughnut);
-            orderItem.flavor = flavorOption[i].getElementsByClassName("card-text")[0].innerText;
-            orderItem.quantity = flavorOption[i].getElementsByClassName("form-control")[0].value;
+            const orderItem= new Doughnut();
+                orderItem.flavor = flavorOption[i].getElementsByClassName("card-text")[0].innerText;
+                orderItem.quantity = flavorOption[i].getElementsByClassName("form-control")[0].value;
             activeOrder.push(orderItem);
         };
     };
@@ -129,15 +134,135 @@ function collectActiveOrder(event){
     }
 };
 
-function addToCart(order){
-    //get json from local storage or create empty array
-    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    //push order to cart
-    cart.push(order);
-    //save updated cart to local
-    sessionStorage.setItem('cart', JSON.stringify(cart)) 
-    //if checkout button clicked, redirect to cart page
-        //if add another, save and stay on page
-        //clear form inputs and reset total
-    
+//CREATE ID COUNTER 
+
+function counter() {
+    let counter = JSON.parse(sessionStorage.getItem('counter') || 0);
+    if (sessionStorage.getItem('cart') !== null){
+        let cart = JSON.parse(sessionStorage.getItem('cart'));
+        for (let i = 0; i < cart.length; i++){
+            counter += 1;
+            console.log('counter:'+ counter);
+        };
+    };
+    sessionStorage.setItem('counter', JSON.stringify(counter))
+    return (JSON.parse(sessionStorage.getItem('counter')))
 };
+
+function boxname(){
+    if (sessionStorage.getItem('cart') !== null){
+        let cart =JSON.parse( sessionStorage.getItem("cart"));
+        let name = "Custom box " + (cart.length + 1);
+        return (name);
+    } else {
+        let name = "Custom box " + 1;
+        return (name);
+    }
+};
+
+//CART ITEM OBJECT
+function CartItem(id,name,price,items){
+    this.id = id;
+    this.name = name;
+    this.price = price;
+    this.items = items;
+};
+
+
+function addToCart(order){
+    if(sessionStorage.getItem('cart') !== null){
+        //grab cart      
+        let cart =JSON.parse( sessionStorage.getItem("cart"));
+        console.log("Cart items:", cart);
+        //create cart objects
+        let newOrder = new CartItem(
+            counter(),
+            boxname(),
+            15.99,
+            order,);
+        // save to local 
+        cart.push(newOrder);
+        sessionStorage.setItem('cart',JSON.stringify(cart));
+        console.log(newOrder);
+
+    }else{
+        let cart = [];
+        let newOrder = new CartItem(
+        counter(),
+        boxname(),
+        parseFloat(15.99),
+        order,);
+        console.log(newOrder);
+        cart.push(newOrder);
+        sessionStorage.setItem('cart',JSON.stringify(cart));
+    };
+};
+
+function onEdit(){
+    //check if cart exists in session storage
+    if(sessionStorage.getItem('tempCartItem') !== null && sessionStorage.getItem('tempCartItem').length != 0){
+    //grab cart      
+        let editCart= JSON.parse(sessionStorage.getItem('tempCartItem'));
+        // loop cart items
+        
+        editOrder(editCart);
+    };
+};
+
+function editOrder(cartData) {
+    console.log('refill order form wwith Json data')
+    // get all option card info 
+    let flavors = document.querySelectorAll('.flavor');
+    //match json name to flavor
+    for (let i = 0; i < flavors.length; i++){
+        let flavor = flavors[i].querySelector('.card-text');
+        console.log(flavor.innerHTML);
+        for (let j = 0; j < cartData[0].items.length; j++){ 
+        console.log(cartData[0].items[j].flavor);
+            if (flavor.innerHTML === cartData[0].items[j].flavor){
+                //if match get value from cart data update ofrm data 
+                let editValue = cartData[0].items[j].quantity;
+                console.log(editValue);
+                //change html value to value 
+                let orderQuantity = flavors[i].querySelector('.form-control');
+                orderQuantity.value = '';
+                orderQuantity.value = editValue;
+
+            };
+        };
+    };
+    getDoughnutTotal();
+    sessionStorage.removeitem('tempCartItem');
+};
+
+/*//RETRIEVE SESSION CART
+function retrieveCart(){
+    console.log("display cart items");
+    //check if cart exists in session storage
+    if(sessionStorage.getItem('cart') !== null){
+    //grab cart      
+    let cart =JSON.parse( sessionStorage.getItem("cart"));
+    console.log("Cart items:", cart);
+    //create cart objects
+    for (let i=0; i < cart.length; i++){
+        let j = i+1;
+        const cartItem = new CartItem(
+             "Custom Box " + j,
+            15.00,
+            cart[i],
+        );
+        console.log("Cart Item Object:", cartItem);
+        displayCartItem(cartItem);
+
+    };
+    } else {
+        //show user their cart is empty
+        console.log("Cart is empty");
+        const emptyCartHTML = `
+        <h5>Your cart is empty</h5>
+        <p>would you like to <a href="/order">create an order</a>?</p>
+        `;
+        let cartBody = document.getElementsByClassName('card-body')
+        cartBody[0].innerHTML= emptyCartHTML;
+    };
+};*/

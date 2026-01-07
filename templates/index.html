@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% set active_page = 'home' %}
+
+{% block main %}
+ <!-- header images  -->
+    <div class="container mt-4">
+        <div class="card text-bg-dark">
+            <img src="{{url_for('static', filename = 'img/header.webp')}}" alt="artisanal donut" class="card-img">
+            <div class="mx-2 card-img-overlay d-flex justify-content-center align-items-center">
+                <div class="col-md-10 col-lg-8 text-center ">
+                    <h3 class="card-title">Made fresh, every day</h3>
+                    <p class="card-text">We craft new flavors using seasonal ingredients sourced from our local farmers. </p>
+                    <a href="{{url_for('order')}}" class="w-100 w-md-auto btn btn-primary btn-lg" type="button">Order a box</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- this weeks Specials -->
+     <div class="container mt-5 mb-5">
+        <h3>This Week's Specials</h3>
+        <div class="row mt-5 justify-content-between" >
+           <div class="col-md mb-3 ">
+                <div class="card">
+                    <img src="{{url_for('static', filename = 'img/Matcha_chocolate.jpg')}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Matcha Chocolate</h5>
+                        <p class="card-text">earthy and slightly sweet</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md mb-3">
+                <div class="card">
+                    <img src="{{url_for('static', filename = 'img/Maple_glazed.jpg')}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Maple Glazed</h5>
+                        <p class="card-text">A sweet twist on a classic</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md mb-3">
+                <div class="card">
+                    <img src="{{url_for('static', filename = 'img/Miso_brown_sugar.jpg')}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Miso Brown Sugar</h5>
+                        <p class="card-text">Sweet and savory</p>
+                    </div>
+                </div>
+            </div>
+           <div class="col-md mb-3 ">
+                <div class="card">
+                    <img src="{{url_for('static', filename = 'img/Blueberry_preserves.jpg')}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Blueberry Preserves</h5>
+                        <p class="card-text">Blueberry glaze filing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-md-3">
+                <a href="{{url_for('order')}}" class="w-100 text-center btn btn-primary mt-3" role="linkToOrder">  Order Now </a>
+            </div>
+        </div>
+    </div>
+<!--About us -->
+    <div class="container my-5">
+        <div class="row">
+            <div class = "col-md-6 mb-3">
+                <img src="{{url_for('static', filename = 'img/Raspberry_rose_filled.jpg')}}" class="card-img-top" alt="...">
+            </div>
+            <div class="col-md-6">
+                <h3>About Us</h3>
+                <p>Founded in 2020, our mission is to bring joy to your taste buds with our handcrafted donuts made from the freshest ingredients. We believe that every bite should be a delightful experience, and we are committed to creating unique flavors that surprise and satisfy. Whether you're stopping by for a quick treat or ordering a box for a special occasion, we are here to make your day a little sweeter.</p>
+                <div class="row">
+                    <div class="col">
+                        <h5>Visit Us</h5>
+                        <p>123 Donut Lane<br>
+                        Sweet City, SC 12345<br>
+                        (123) 456-7890<br>
+                    </div>
+                    <div class="col">
+                        <h5>Hours</h5>
+                        <p>Monday - Friday:<br> 7:00 - 4:00 PM</p>
+                        <p>Saturday - Sunday:<br> 8:00 - 2:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

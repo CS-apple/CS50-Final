@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Order
+{% endblock %}
+
+{% set active_page = 'order' %}
+{% block head_include %}
+    <script async type="module" src="{{ url_for('static', filename = 'order.js')}}"></script>
+{% endblock %}
+
+{% block main %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create a box</h1>
+                <p>Select your pick up date and mix and match 12 doughnuts for your box. 
+                If you need more, you can create additional boxes after this one.
+                All boxes must contain 12 doughnuts. All boxes are priced the same 
+                </p>
+            </div>
+            <!-- <div class="card-body">
+                <div>
+                    <div class="row">
+                        <label for="pickup date" class="form-label">Pick-up Date:</label>
+                        <input type="date" name="pickup date">
+                    </div>
+                </div>
+            </div>-->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 col-sm-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/Matcha_chocolate.jpg')}}" class="card-img-top" alt="">
+                            <div class="flavor card-body">
+                                <h5 class="card-text">Matcha Chocolate</h5>
+                                <label for="quantity" class="form-label"> How many?</label>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/Maple_glazed.jpg')}}" class="card-img-top" alt="">
+                            <div class="flavor card-body">
+                                <h5 class="card-text">Maple Glazed</h5>
+                                <label for="quantity" class="form-label"> How many?</label>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/Miso_brown_sugar.jpg')}}" class="card-img-top" alt="">
+                            <div class="flavor card-body">
+                                <h5 class="card-text">Miso Brown Sugar</h5>
+                                <label for="quantity" class="form-label"> How many?</label>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/Blueberry_preserves.jpg')}}" class="card-img-top" alt="">
+                            <div class="flavor card-body">
+                                <h5 class="card-text">Blueberry Preserves</h5>
+                                <label for="quantity" class="form-label"> How many?</label>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/Pumpkin_spiced.jpg')}}" class="card-img-top" alt="">
+                            <div class="flavor card-body">
+                                <h5 class="card-text">Pumpkin Spiced</h5>
+                                <label for="quantity" class="form-label"> How many?</label>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 mb-2">
+                        <div class="card">
+                            <img src="{{url_for('static', filename = 'img/Funfetti.jpg')}}" class="card-img-top" alt="">
+                            <div class="flavor card-body">
+                                <h5 class="card-text">Funfetti</h5>
+                                <label for="quantity" class="form-label"> How many?</label>
+                                <input type="number" class="form-control" name="quantity" min="0" max="12" value="0">
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <div class="col-md-6 orderSummary">
+                    <div class="d-flex flex-row justify-content-end" >
+                        <p>Doughnuts selected: </p>
+                         <p><strong><span id="DntTot">0</span></strong> /12</p>
+                    </div>
+                    <div class="d-flex flex-row justify-content-end">
+                        <p>Price per box: </p>
+                         <p><strong> $15.99</strong></p>
+                    </div>
+                <div class="flash d-flex flex-row justify-content-end"> </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-sm-5 d-flex justify-content-between">
+                    <button type= "submit" class="add-another btn btn-secondary w-100 me-2" disabled>need another box?</button>
+                    <button type="submit" href="{{url_for('cart')}}" class="checkout btn btn-primary w-100" disabled>Add to cart</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

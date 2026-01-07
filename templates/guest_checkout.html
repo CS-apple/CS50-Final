@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Checkout
+{% endblock %}
+
+{% set active_page = 'cart' %}
+
+{% block main %}
+ <div class="container-sm mt-5"> 
+    <div class="row mb-5">
+        <h2 class="text-center">checkout</h2>
+    </div>
+    <div class="row">
+<!-- Cart Summary Left side -->
+        <div class="col">
+           <div class="card">
+                <div class="card-header">
+                    <h3>Your Cart</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-3">
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <h5>Item Name</h5>
+                            <h5>$15.00</h5>
+                        </div>
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div>
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div>
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div> 
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <h5>Item Name</h5>
+                            <h5>$15.00</h5>
+                        </div>
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div>
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div>
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div> 
+                        <div class ="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">Doughnut</p>
+                            <p class="mb-0">3</p>
+                        </div>   
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <h5>Total: $30.00</h5>
+                    <p>Pickup Date: <span>06/11/1993</span></p>
+                </div>    
+            </div>
+        </div>
+<!-- check out form Right side -->
+        <div class="col">
+    <!-- guest contact -->
+                <div class="card mx-auto">
+                    <div class="card header">
+                        <h3 class="ms-3 mt-3">Contact</h3>
+                    </div>
+                    <div class="card-body col-10 mx-auto">
+                        <form>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone number</label>
+                                <input type="tel" class="form-control">
+                            </div>
+                        </form>
+                        <form>
+                            <h5>
+                                Would you like to save your information for next time?
+                            </h5>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Re-type Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="row mb-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <p> already have an account? 
+                                    <a href="{{url_for('login')}}" class="btn btn-link p-0">Log in!</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    <!-- billing -->
+                    <div class="card my-1 mx-auto">
+                        <div class="card header">
+                            <h3 class="ms-3 mt-3">Billing address</h3>
+                        </div>
+                        <div class="card-body col-10 mx-auto">
+                            <form>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="col mb-3">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address1" class="form-label">Address line 1</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address2" class="form-label">Address line 2
+                                    </label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="City" class="form-label">City</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="State" class="form-label">State</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="zip" class="form-label">Zip Code</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+    <!-- Card detail -->
+                <div class="card my-1 mx-auto">
+                    <div class="card header">
+                        <h3 class="ms-3 mt-3">Pay with card</h3>
+                    </div>
+                    <div class="card-body col-10 mx-auto">
+                        <form>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="card_number" class="form-label">Card number</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="NameOnCard" class="form-label">Name on card</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    <!-- place order button -->
+                <div class="row mb-3 justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Place Order</button>
+                </div>
+        </div>
+    </div>    
+</div>
+{% endblock %}

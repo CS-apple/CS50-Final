@@ -34,9 +34,8 @@ function EnableCheckout(status){
 //CHECKOUT AND SEND TO BACK
 function Checkout(event){
     console.log("checkout clicked");
-    //GET OPEN JSON AND ADD PICK UP DATE
-    //VALIDATE NAMES MATCH DB NAMES 
-    //MUST HAVE 
+    addPickupDateToCheckout();
+
 //ENTER VALIDATION WITH FLASK
 };
 
@@ -46,7 +45,6 @@ function retrieveCart(){
     if(sessionStorage.getItem('cart') !== null && sessionStorage.getItem('cart').length != 0){
     //grab cart      
         let cart= JSON.parse(sessionStorage.getItem('cart'));
-        // loop cart items
         return cart;
     };
 };
@@ -64,7 +62,6 @@ function renderCart(cart){
     updateTotalPrice()
     } else {
         //show user their cart is empty
-        console.log("Cart is empty");
         const emptyCartHTML = `
         <h5>Your cart is empty</h5>
         <p>would you like to <a href="/order">create an order</a>?</p>
@@ -79,7 +76,6 @@ function renderCart(cart){
 
 //Display cart items in HTML
 function displayCartItem(cartRow){
-    console.log("cart item to diaplay");
     const cart = document.getElementsByClassName('card-body')[0];
     //create new row
     const row= document.createElement('div');
@@ -233,12 +229,6 @@ function updateTotalPrice(){
     }
 };
 
-//change date input to todays date as default, call when ready 
-//add event lstender change to date input, call when ready
-//calidate date selected is not before today 
-// date selected must be within a week
-// if date selected is valid, enable checkout button 
-
 //DATEPICKER DEFAULTS TODAY
 function defaultToday() {
     let date = document.getElementById('pickup-date');
@@ -254,12 +244,10 @@ function dateEventListener(){
 
 //PICKUPDATE UPDATED
 function pickupDate(event){
-    console.log(event.target.value)
     let dateInput = validDate(event.target.value);
     const flash = document.getElementById('flash');
     let message= document.createElement('p');
     if (dateInput != true){
-        console.log('invalid date');
         //should show message to user
         message.textContent = "Please pick a day within the next 10 days.";
         flash.appendChild(message);
@@ -267,8 +255,9 @@ function pickupDate(event){
         defaultToday();
         return;
     };
+    message.textContent = " "
+    flash.appendChild(message)
     EnableCheckout(validDate(event.target.value));
-    console.log('date changed');
 };
 
 //pickupdate validation 
@@ -278,11 +267,25 @@ function validDate(dateInput){
     dateMax.setDate(today.getDate() + 10);
     let formatDateMax = dateMax.toISOString();
     let formatDateMin = today.toISOString();
-    console.log(formatDateMin);
-    console.log(formatDateMax);
     if (formatDateMin < dateInput && dateInput <= formatDateMax){
         return true;
     } 
     return false;
+};
+
+//ADD PICKUP DATE TO CHECKOUT JSON
+function addPickupDateToCheckout() {
+    //get Json 
+    const date = document.getElementById('pickup-date');
+    let cart = retrieveCart()
+    if (sessionStorage.getItem('cart') !== null){
+        for (let i=0; i< cart.length; i++) {
+            cart[i].date = date.value;
+        }
+    }
+    //retrieve pickup date
+    console.log(date.value)
+    console.log(cart)
+    //cart[0].append(date: date)
 };
 

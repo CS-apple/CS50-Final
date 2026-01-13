@@ -7,7 +7,7 @@ from cs50 import SQL
 app = Flask(__name__)
 
 #configure db
-db = SQL("sqlite:///test.db")
+db = SQL("sqlite:///ds.db")
 
 #routes
 

@@ -23,12 +23,13 @@ function ready(){
 //ENABLE CHECKOUT BUTTON 
 function EnableCheckout(status){
     const checkoutButton = document.getElementById("checkout-btn");
+    const cart = retrieveCart();
     checkoutButton.disabled = true;
-    if (status != true){
-        checkoutButton.disabled = true;
-        return;
-    } 
-    checkoutButton.disabled = false;
+    if (status == true && cart != null && cart.length != 0){
+        checkoutButton.disabled = false;
+    } else {
+    checkoutButton.disabled = true;
+    };
 };
 
 //CHECKOUT AND SEND TO BACK
@@ -242,22 +243,33 @@ function dateEventListener(){
     date.addEventListener('change', pickupDate);
 }
 
-//PICKUPDATE UPDATED
+// PICKUP DATE  Updated 
 function pickupDate(event){
     let dateInput = validDate(event.target.value);
-    const flash = document.getElementById('flash');
-    let message= document.createElement('p');
-    if (dateInput != true){
-        //should show message to user
-        message.textContent = "Please pick a day within the next 10 days.";
-        flash.appendChild(message);
-        EnableCheckout(validDate(event.target.value));
+    if (dateInput != true){   
         defaultToday();
-        return;
     };
-    message.textContent = " "
-    flash.appendChild(message)
     EnableCheckout(validDate(event.target.value));
+    flashMessage(validDate(event.target.value));
+};
+
+function flashMessage(bool){
+    const flash = document.getElementById('flash');
+    let flashMsg = '';
+    // flash message based on bool value
+    if (bool == true){
+        flashMsg  = '';
+    } else {
+        flashMsg = 'Please pick a day within the next 10 days.';
+    };
+    //if flash has children, replace message
+    if (flash.hasChildNodes()){
+        flash.replaceChildren(flashMsg);
+    } else {
+        const message= document.createElement('p');
+        flash.appendChild(flashMsg);
+    }
+    //otherwise, create new message 
 };
 
 //pickupdate validation 
@@ -289,3 +301,4 @@ function addPickupDateToCheckout() {
     //cart[0].append(date: date)
 };
 
+console.log(retrieveCart());

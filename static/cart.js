@@ -253,6 +253,7 @@ function pickupDate(event){
     flashMessage(validDate(event.target.value));
 };
 
+// FLASH MESSAGE
 function flashMessage(bool){
     const flash = document.getElementById('flash');
     let flashMsg = '';

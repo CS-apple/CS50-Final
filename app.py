@@ -1,9 +1,15 @@
 import os
+import hashlib
+import ssl
 
 from flask import Flask, render_template, request, redirect, session, flash, redirect, url_for
 from cs50 import SQL
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
+
+
+print(f"Python Version: {hashlib.__name__}")
+print(f"OpenSSL Version: {ssl.OPENSSL_VERSION}")
 
 #configure app 
 app = Flask(__name__)
@@ -24,6 +30,28 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+def hash_password(password):
+    """called when user registers"""
+    salt = os.urandom(16)
+    hash_value = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode ('utf-8'),
+        salt,
+        100000
+    )
+    return salt.hex(), hash_value.hex()
+
+def verify_password(stored_salt_hex, stored_hash_hex, password_attempt):
+    """called when user logs"""
+    salt = bytes.fromhex(stored_salt_hex)
+    has_to_check = bytes.fromhex(stored_hash_hex)
+    new_hash = hashlib.pbkdf2_hmac(
+        'sha256',
+        password_attempt.encode('utf-8'),
+        salt,
+        100000
+    )
+    return new_hash == hash_to_check
 #routes
 
 #HOME
@@ -81,11 +109,11 @@ def register():
             return render_template("register.html")
         #register user in db 
         userID = db.execute(
-            'INSERT INTO users (first_name,cllast_name,email, phone) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
+            'INSERT INTO users (first_name,last_name,email,phone) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
         )
         #insert password into password table 
         sessionID = db.execute(
-            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, generate_password_hash(request.form.get('password'),method='pbkdf2:sha256') 
+            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, hash_password(request.form.get('password'), method='pbkdf2:sha256') 
         )
         #session user id = sessions id 
         session["userID"] =  sessionID

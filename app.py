@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, session, flash, redirect, url_for
 from cs50 import SQL
 from flask_session import Session
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #configure app 
 app = Flask(__name__)
@@ -84,7 +84,7 @@ def register():
         )
         #insert password into password table 
         sessionID = db.execute(
-            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, generate_password_hash(request.form.get('password'), method='pbkdf2:sha256') 
+            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, generate_password_hash(request.form.get('password'), method='pbkdf2') 
         )
         #session user id = sessions id 
         session["userID"] =  sessionID

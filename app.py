@@ -5,10 +5,6 @@ from cs50 import SQL
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
-print(f"Python Version: {hashlib.__name__}")
-print(f"OpenSSL Version: {ssl.OPENSSL_VERSION}")
-
 #configure app 
 app = Flask(__name__)
 
@@ -29,7 +25,6 @@ def after_request(response):
     return response
 
 #routes
-
 #HOME
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -85,7 +80,7 @@ def register():
             return render_template("register.html")
         #register user in db 
         userID = db.execute(
-            'INSERT INTO users (first_name,last_name,email,phone) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
+            'INSERT INTO users (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
         )
         #insert password into password table 
         sessionID = db.execute(

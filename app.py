@@ -72,7 +72,7 @@ def register():
             return render_template("register.html", message="Passwords do not match")
         # query db for email
         account = db.execute(
-            'SELECT * FROM users WHERE email = ?', request.form.get("email")
+            'SELECT * FROM user WHERE email = ?', request.form.get("email")
         )
         # check if user is already in db 
         if len(account)!=0:
@@ -80,7 +80,7 @@ def register():
             return render_template("register.html")
         #register user in db 
         userID = db.execute(
-            'INSERT INTO users (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
+            'INSERT INTO user (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
         )
         #insert password into password table 
         sessionID = db.execute(

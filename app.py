@@ -84,7 +84,7 @@ def register():
         )
         #insert password into password table 
         sessionID = db.execute(
-            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, hash_password(request.form.get('password'), method='pbkdf2:sha256') 
+            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, generate_password_hash(request.form.get('password'), method='pbkdf2:sha256') 
         )
         #session user id = sessions id 
         session["userID"] =  sessionID

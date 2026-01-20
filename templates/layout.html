@@ -39,9 +39,19 @@
         </div>
         </nav>
     </header>
-    {% block main %}
-    
-    {% endblock %}
+<!--flash message-->
+    {% with messages = get_flashed_messages(with_categories=true)%}
+    {% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages%}
+        <li class="alert {{category}}">{{message}}</li>
+    {% endfor %}
+    </ul>
+    {%endif%}
+    {% endwith %}
+<!--content main -->
+        {% block main %}{% endblock %}
+<!-- footer-->
     <footer class="mt-5">
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2025 Copyright:

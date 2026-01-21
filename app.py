@@ -80,16 +80,19 @@ def register():
             return render_template("register.html")
         #register user in db 
         userID = db.execute(
-            'INSERT INTO user (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"),request.form.get("lastname"),request.form.get("phone"), request.form.get("email")
+            'INSERT INTO user (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"), request.form.get("lastname"), request.form.get("phone"), request.form.get("email")
         )
-        #insert password into password table 
+        # insert password into password table 
+        user_val = userID
+        #phash = generate_password_hash(request.form.get("password"), method ='pbkdf2')
         sessionID = db.execute(
-            'INSERT INTO hash (user_id, password_hash) VALUES (?,?)', userID, generate_password_hash(request.form.get('password'), method='pbkdf2') 
+            'INSERT INTO hash (user,password_hash) VALUES (?, ?)', user_val, generate_password_hash(request.form.get("password"), method ='pbkdf2') 
         )
         #session user id = sessions id 
         session["userID"] =  sessionID
         #if user has a cart in sessions storrage,
         #redirect to homepage
+        flash('registered','alert-success')
         return redirect("/")
 
     else: 

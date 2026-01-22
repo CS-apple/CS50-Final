@@ -40,8 +40,43 @@ def order():
 #LOGIN    
 @app.route("/login", methods = ["GET", "POST"])
 def login():
-    if request.method == "GET":
-        return render_template("login.html")  
+    if request.method == "POST":
+        #email is not empty
+        if not request.form.get('email'):
+            flash("please enter your email with us", 'alert-danger')
+            return render_template("login.html")
+
+        #password not empty
+        if not request.form.get('password'):
+            flash('please enter your password with us', 'alert-danger')
+            return render_template("login.html")
+        #check for unique email in db
+        email = db.execute(
+            'SELECT * FROM user WHERE email = ?', request.form.get("email")
+        )
+        #if email not found render message
+        if len(email) != 1:
+            flash("We cannot find this email, would you like to register?","alert-primary")
+            return render_template("login.html")
+        #check if user_id has a password
+        password = db.execute(
+            'SELECT * FROM hash WHERE user = ?', email[0].get('user_id')
+        )
+        if len(password) != 1:
+            flash("incorrect password", "alert-danger")
+            return render_template("login.html")
+        print(password)
+        #cross check associated id in hash
+        if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
+            session["userID"] == password[0].get("session_id")
+            flash("login success", 'alert-success')
+            return redirect("/")
+        #else flash error 
+        else:
+            flash("incorrect password")
+            return render_template("login.html")
+    else:
+        return render_template("login.html")
 
 #REGISTER
 @app.route("/register", methods = ["GET", "POST"])
@@ -54,28 +89,43 @@ def register():
             return render_template("register.html")
         # last name submitted?
         if not request.form.get('lastname'):
-            return render_template("register.html", message="Must provide last name")
+            flash('Please add your last name', 'alert-danger')
+            return render_template("register.html")
         # phone number submitted?
         if not request.form.get('phone'):
-            return render_template("register.html", message="Must provide phone number")
+            flash('Please add your phone number', 'alert-danger')
+            return render_template("register.html")
         # email submitted?
         if not request.form.get('email'):
-            return render_template("register.html", message="Must provide email")
+            flash('Please add your email', 'alert-danger')
+            return render_template("register.html")
         # password submitted?
         if not request.form.get('password'):
-            return render_template("register.html", message="Must provide password")
+            flash('Please create a password', 'alert-danger')
+            return render_template("register.html")
         # confirm password submitted
         if not request.form.get('confirmation'):
-            return render_template("register.html", message="Must confirm password")
+            flash('Please retype password', 'alert-danger')
+            return render_template("register.html")
         # match password
         if request.form.get('password') != request.form.get('confirmation'):
-            return render_template("register.html", message="Passwords do not match")
+            flash('Passwords need to match', 'alert-danger')            
+            return render_template("register.html")
+        #query phone in db 
+        phone = db.execute(
+            'SELECT * FROM user WHERE phone = ?', request.form.get("phone")
+        )
+        # check if phone in db 
+        if len(phone) != 0:
+            'SELECT * FROM urser WHERE phone = ?', request.form.get("phone")
+            flash('Account already exists for this phone number','alert-danger')
+            return render_template("register.html")        
         # query db for email
-        account = db.execute(
+        email = db.execute(
             'SELECT * FROM user WHERE email = ?', request.form.get("email")
         )
         # check if user is already in db 
-        if len(account)!=0:
+        if len(email)!=0:
             flash('Account already exists for this email address','alert-danger')
             return render_template("register.html")
         #register user in db 
@@ -92,7 +142,7 @@ def register():
         session["userID"] =  sessionID
         #if user has a cart in sessions storrage,
         #redirect to homepage
-        flash('registered','alert-success')
+        flash('account registration successful','alert-success')
         return redirect("/")
 
     else: 

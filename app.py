@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, redirect, session, flash, redirect, url_for
+from flask import Flask, render_template, request, redirect, session, flash, redirect, url_for, jsonify
 from cs50 import SQL
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -68,7 +68,7 @@ def login():
         print(password)
         #cross check associated id in hash
         if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
-            session["userID"] == password[0].get("session_id")
+            session["userID"] = password[0].get("session_id")
             flash("login success", 'alert-success')
             return redirect("/")
         #else flash error 
@@ -77,6 +77,13 @@ def login():
             return render_template("login.html")
     else:
         return render_template("login.html")
+
+#LOGOUT
+@app.route("/logout")
+def logout():
+    flash("you have been logged out", 'alert-success')
+    session.clear()
+    return redirect("/")
 
 #REGISTER
 @app.route("/register", methods = ["GET", "POST"])
@@ -178,6 +185,32 @@ def guest_checkout():
     if request.method == "GET":
         return render_template("guest_checkout.html")  
 
+# RECIEVE JSON
+@app.route("/recieve_json", methods = ["POST"])
+def recieve_json():
+    data = request.get_json()
+    cart = data.get('cart', [])
+
+    for box in cart:
+        box_name = box.get('name')
+        #is a string 
+        price = box.get('price')
+        #check price against db
+        #if match save value, else return error
+        delivery_date = box.get('date')
+        #is valid date?
+
+        print(f"Validating {box_name} priced at ${price}")
+
+        for detail in box.get('items', []):
+            flavor = detail.get('flavors')
+            #match with flavors in db 
+            # error if strings dont match
+            quantity = detail.get('quantity')
+            #is a number
+            print(f" - packaged {quantity} of {flavor}")
+
+    return jsonify({"status": "success", "message": "Order Processed", "redirect_url": "create_sess.html"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

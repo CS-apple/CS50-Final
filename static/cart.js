@@ -34,8 +34,9 @@ function EnableCheckout(status){
 
 //CHECKOUT AND SEND TO BACK
 function Checkout(event){
-    console.log("checkout clicked");
     addPickupDateToCheckout();
+    checkoutData();
+    window.
 
 //ENTER VALIDATION WITH FLASK
 };
@@ -297,9 +298,28 @@ function addPickupDateToCheckout() {
         }
     }
     //retrieve pickup date
-    console.log(date.value)
-    console.log(cart)
+    sessionStorage.setItem('cart', JSON.stringify(cart));
     //cart[0].append(date: date)
 };
 
-console.log(retrieveCart());
+// SEND JSON TO FLASK
+ async function checkoutData() {
+    try {
+    const response = await fetch('/recieve_json', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            cart: retrieveCart()
+        })
+        
+    });
+
+    const result = await response.json();
+    console.log ("Server response:", result);
+    } catch (error) {
+        console.error("Checkout failed:", error);
+    }
+
+}

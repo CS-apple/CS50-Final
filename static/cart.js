@@ -36,8 +36,6 @@ function EnableCheckout(status){
 function Checkout(event){
     addPickupDateToCheckout();
     checkoutData();
-    window.
-
 //ENTER VALIDATION WITH FLASK
 };
 
@@ -313,7 +311,7 @@ function addPickupDateToCheckout() {
         body: JSON.stringify({
             cart: retrieveCart()
         })
-        
+
     });
 
     const result = await response.json();

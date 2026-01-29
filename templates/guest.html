@@ -1,22 +1,20 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Checkout
+    Register Guest
 {% endblock %}
-
-{% set active_page = 'cart' %}
 
 {% block main %}
  <div class="container-sm mt-5"> 
     <div class="row mb-5">
-        <h2 class="text-center">checkout</h2>
+        <h2 class="text-center">Checkout as Guest</h2>
     </div>
     <div class="row">
         <div class="col">
     <!-- guest contact -->
-                <div class="card mx-auto">
-                    <div class="card header">
-                        <h3 class="ms-3 mt-3">Contact</h3>
+                <div class="card my-5 col-md-6 mx-auto">
+                    <div class="card-header">
+                        <h3 class="ms-3 mt-3">Guest contact</h3>
                     </div>
                     <div class="card-body col-10 mx-auto">
                         <form action="{{url_for('guest', next=next)}}" method="post">
@@ -39,7 +37,7 @@
                                 <input type="email" name="email" class="form-control" required>
                             </div> 
                             <div class="row mb-3 justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-lg"> Proceed to checkout</button>
+                                <button type="submit" name="guest_user" class="btn btn-primary btn-lg"> Proceed to checkout</button>
                             </div>                           
                         </form>
                         <form>
@@ -55,7 +53,7 @@
                                 <input type="password" class="form-control">
                             </div>
                             <div class="row mb-3 justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                                <button name="register_guest" type="submit" class="btn btn-primary btn-lg">Register</button>
                             </div>
                             <div class="mb-3 text-center">
                                 <p> already have an account? 

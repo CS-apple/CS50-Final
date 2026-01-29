@@ -172,6 +172,7 @@ def guest():
     next_page = request.args.get('next')
     """Register user"""
     if request.method == "POST":
+    #if guest user submitted 
         # first name submitted? 
         if not request.form.get('firstname'):
             flash('Please add your first name', 'alert-danger')
@@ -194,14 +195,12 @@ def guest():
         )
         #guest session = userID
         session["userID"] =  userID
-        #if user has a cart in sessions storrage,
-        #redirect to homepage
+        #procced to checkout page 
         flash('logged in as guest','alert-success')
-        if next_page == 'logged_checkout':
-            return redirect(url_for('logged_checkout'))
-        return redirect("/")
+        return redirect(url_for('logged_checkout'))
+    #else if register guest submitted 
     else: 
-        render_template('guest.html')
+        return render_template("guest.html")
 
 #ADMIN
 @app.route("/admin", methods = ["GET", "POST"])
@@ -209,10 +208,12 @@ def admin():
     if request.method == "GET":
         return render_template("admin.html")
     
-#CCART
+#CART
 @app.route("/cart", methods = ["GET","POST"])
 def cart():
-    if request.method == "GET":
+    if request.method == "POST":
+        return render_template("create_sess.html")
+    else:
         return render_template("cart.html")    
     
 #SESSION CREATION

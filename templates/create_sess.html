@@ -26,12 +26,13 @@ Log In
                             <input type="password" class="form-control">
                         </div>
                         <div class="row mb-3 justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg">Log in</button>
+                            <button type="submit" class="btn btn-primary btn-lg" href="{{url_for('logged_checkout')}}">Log in</button>
                         </div>
                         <div class="mb-3 text-center">
                             <p> dont have an account? 
-                                <a href="{{url_for('register')}}" class="btn btn-link p-0">Register an account!</a>
-                            </p>
+                                <!--confirm route to final checkout-->
+                                <a href="{{url_for('register', next='logged_checkout')}}" class="btn btn-link p-0">Register an account!</a>
+                            </p>   
                         </div>
                     </form>
                 </div>
@@ -44,12 +45,9 @@ Log In
                 </div>
                 <div class="card-body mx-auto">
                     <form>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control">
-                        </div>
                         <div class="row mb-3 justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg">Guest checkout</button>
+                            <!--confirm checout route-->
+                            <button type="submit" class="btn btn-primary btn-lg" href="{{url_for('guest')}}">Guest checkout</button>
                         </div>
                     </form>
                 </div>

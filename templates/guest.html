@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Checkout
+{% endblock %}
+
+{% set active_page = 'cart' %}
+
+{% block main %}
+ <div class="container-sm mt-5"> 
+    <div class="row mb-5">
+        <h2 class="text-center">checkout</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+    <!-- guest contact -->
+                <div class="card mx-auto">
+                    <div class="card header">
+                        <h3 class="ms-3 mt-3">Contact</h3>
+                    </div>
+                    <div class="card-body col-10 mx-auto">
+                        <form action="{{url_for('guest', next=next)}}" method="post">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" name="firstname" class="form-control" required>
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" name="lastname" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone number</label>
+                                <input type="tel" name = "phone" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div> 
+                            <div class="row mb-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-lg"> Proceed to checkout</button>
+                            </div>                           
+                        </form>
+                        <form>
+                            <h5>
+                                Would you like to save your information for next time?
+                            </h5>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Re-type Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="row mb-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <p> already have an account? 
+                                    <a href="{{url_for('login')}}" class="btn btn-link p-0">Log in!</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+{% endblock %}

@@ -40,7 +40,7 @@
                                 <button type="submit" name="guest_user" class="btn btn-primary btn-lg"> Proceed to checkout</button>
                             </div>                           
                         </form>
-                        <form>
+                        <form action="{{url_for('guest', next=next,)}}" method="post">
                             <h5>
                                 Would you like to save your information for next time?
                             </h5>

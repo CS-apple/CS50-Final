@@ -8,8 +8,9 @@ function ready() {
 console.log("Hello from tools.js");
 //add event listener for counter
 display(retrieveCart());
-
+addEventListener(getLogout())
 };
+
 display(retrieveCart());
 
 
@@ -32,3 +33,17 @@ function display(cart){
     num.innerHTML = `${cart.length}`
     };
 };
+
+//Get log in button 
+function getLogout(){
+    button = document.querySelector('#nav_logout')
+    return button
+};
+
+function logout_listener(){
+    addEventListener(getLogout)
+};
+
+function logout(event){
+    sessionStorage.clear()
+}

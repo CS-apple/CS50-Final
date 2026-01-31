@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, redirect, session, flash, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
 from cs50 import SQL
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 #configure db
-db = SQL("sqlite:///ds.db")
+db = SQL("sqlite:///db.db")
 
 #configure session
 app.config["SESSION_PERMANENT"] = False
@@ -41,7 +41,8 @@ def order():
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     #CAPTURE NEXT IF FROM CHECKOUT
-    next_page = request.args.get('next')  
+    next_page = request.args.get('next')
+    #POST  
     if request.method == "POST":        
         #email is not empty
         if not request.form.get('email'):
@@ -52,29 +53,29 @@ def login():
         if not request.form.get('password'):
             flash('please enter your password with us', 'alert-danger')
             return render_template("login.html")
+        
         #check for unique email in db
         email = db.execute(
-            'SELECT * FROM user WHERE email = ?', request.form.get("email")
+            'SELECT * FROM user WHERE email = ? AND is_guest = 0', request.form.get("email")
         )
         #if email not found render message
-        if len(email) != 1:
+        if len(email)  != 1:
             flash("We cannot find this email, would you like to register?","alert-primary")
             return render_template("login.html")
         #check if user_id has a password
         password = db.execute(
-            'SELECT * FROM hash WHERE user = ?', email[0].get('user_id')
+            'SELECT * FROM hash WHERE user = ? AND is_guest = 0', email[0].get('user_id')
         )
         if len(password) != 1:
-            flash("incorrect password", "alert-danger")
+            flash(" incorrect password", "alert-danger")
             return render_template("login.html")
-        print(password)
         #cross check associated id in hash
         if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
             session["userID"] = password[0].get("session_id")
             flash("login success", 'alert-success')
             if next_page == 'logged_checkout':
                 return redirect(url_for('logged_checkout'))
-            return redirect(url_for('/'))
+            return redirect(url_for('index'))
         #else flash error 
         else:
             flash("incorrect password")
@@ -87,7 +88,7 @@ def login():
 def logout():
     flash("you have been logged out", 'alert-success')
     session.clear()
-    return redirect("/")
+    return render_template("index.html")
 
 #REGISTER
 @app.route("/register", methods = ["GET", "POST"])
@@ -126,24 +127,24 @@ def register():
             return render_template("register.html")
         #query phone in db 
         phone = db.execute(
-            'SELECT * FROM user WHERE phone = ?', request.form.get("phone")
+            'SELECT * FROM user WHERE phone = ? AND is_guest = 0', request.form.get("phone")
         )
         # check if phone in db 
         if len(phone) != 0:
-            'SELECT * FROM urser WHERE phone = ?', request.form.get("phone")
+            'SELECT * FROM user WHERE phone = ? AND is_guest = 0', request.form.get("phone")
             flash('Account already exists for this phone number','alert-danger')
             return render_template("register.html")        
         # query db for email
         email = db.execute(
-            'SELECT * FROM user WHERE email = ?', request.form.get("email")
+            'SELECT * FROM user WHERE email = ? AND is_guest = 0', request.form.get("email")
         )
         # check if user is already in db 
-        if len(email)!=0:
+        if len(email) != 0:
             flash('Account already exists for this email address','alert-danger')
             return render_template("register.html")
         #register user in db 
         userID = db.execute(
-            'INSERT INTO user (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"), request.form.get("lastname"), request.form.get("phone"), request.form.get("email")
+            'INSERT INTO user (first_name,last_name,phone,email,is_guest) VALUES (?,?,?,?,?)', request.form.get("firstname"), request.form.get("lastname"), request.form.get("phone"), request.form.get("email"), 0
         )
         user_val = userID
         #check passwords match 
@@ -159,7 +160,7 @@ def register():
             flash('account registration successful','alert-success')
             if next_page == 'logged_checkout':
                 return redirect(url_for('logged_checkout'))
-            return redirect("/")
+            return redirect('index.html')
         else:
             flash('passwords do not match', 'alert-danger')
             render_template("register.html", next = next_page)
@@ -191,12 +192,13 @@ def guest():
             return render_template("register.html")
         #register user in db 
         userID = db.execute(
-            'INSERT INTO user (first_name,last_name,phone,email) VALUES (?,?,?,?)', request.form.get("firstname"), request.form.get("lastname"), request.form.get("phone"), request.form.get("email")
+            'INSERT INTO user (first_name,last_name,phone,email,is_guest) VALUES (?,?,?,?,?)', request.form.get("firstname"), request.form.get("lastname"), request.form.get("phone"), request.form.get("email"), 1
         )
         #guest session = userID
         session["userID"] =  userID
         #procced to checkout page 
         flash('logged in as guest','alert-success')
+        print (f"next {next_page}")
         return redirect(url_for('logged_checkout'))
     #else if register guest submitted 
     else: 
@@ -219,44 +221,44 @@ def cart():
 #SESSION CREATION
 @app.route("/create_sess", methods = ["GET","POST"])
 def create_sess():
-        #CAPTURE NEXT IF FROM CHECKOUT
-    next_page = request.args.get('next')  
+    #CAPTURE NEXT IF FROM CHECKOUT
+    next_page = request.args.get('next')
+    #POST  
     if request.method == "POST":        
         #email is not empty
         if not request.form.get('email'):
             flash("please enter your email with us", 'alert-danger')
             return render_template("login.html")
-
         #password not empty
         if not request.form.get('password'):
             flash('please enter your password with us', 'alert-danger')
             return render_template("login.html")
         #check for unique email in db
         email = db.execute(
-            'SELECT * FROM user WHERE email = ?', request.form.get("email")
+            'SELECT * FROM user WHERE email = ? AND is_guest = 0', request.form.get("email")
         )
         #if email not found render message
         if len(email) != 1:
             flash("We cannot find this email, would you like to register?","alert-primary")
-            return render_template("login.html")
+            return render_template(url_for('create_sess'))
         #check if user_id has a password
+
         password = db.execute(
             'SELECT * FROM hash WHERE user = ?', email[0].get('user_id')
         )
         if len(password) != 1:
             flash("incorrect password", "alert-danger")
-            return render_template("login.html")
-        print(password)
+            return render_template(url_for('create_sess'))
         #cross check associated id in hash
         if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
             session["userID"] = password[0].get("session_id")
-            flash("login success", 'alert-success')
+            flash('login success', 'alert-success')
             if next_page == 'logged_checkout':
                 return redirect(url_for('logged_checkout'))
-            return redirect(url_for('/'))
+            return redirect(url_for('index'))
         #else flash error 
         else:
-            flash("incorrect password")
+            flash("incorrect password", "alert-danger")
             return render_template("login.html", next=next_page)
     else:
         return render_template("create_sess.html")  
@@ -264,8 +266,14 @@ def create_sess():
 #LOGGED CHECKOUT 
 @app.route("/logged_checkout", methods = ["GET","POST"])
 def logged_checkout():
-    if request.method == "GET":
-        return render_template("logged_checkout.html")  
+    #get next in case of input errors 
+    next_page = request.args.next('next')
+    #
+    if request.method == "POST":
+        flash("Your order has been placed for date", 'alert-success' )
+        return render_template("index.html") 
+    else: 
+        render_template("logged_checkout.html") 
     
 # GUEST CHECKOUT 
 @app.route("/guest_checkout", methods = ["GET","POST"])

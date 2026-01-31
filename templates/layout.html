@@ -32,9 +32,9 @@
                 </li>
             </ul>
                 {% if session.userID %}
-                    <a href="{{url_for('logout')}}" class="btn btn-secondary btn-lg me-2" role="LogoutButton">Log Out</a>
+                    <a href="{{url_for('logout')}}" class="nav_logout btn btn-secondary btn-lg me-2" role="LogoutButton">Log Out</a>
                 {% else %}
-                    <a href="{{url_for('login')}}" class="btn btn-secondary btn-lg me-2" role="LoginButton">Log In</a>
+                    <a href="{{url_for('login')}}" class=" nav_login btn btn-secondary btn-lg me-2" role="LoginButton">Log In</a>
                 {% endif %}
 
                 <a href="{{url_for('cart')}}" class="btn btn-primary btn-lg" role="CartButton">Cart 

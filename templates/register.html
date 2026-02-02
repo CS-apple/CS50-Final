@@ -39,10 +39,11 @@ Register
                     <input type="password" name="confirmation" class="form-control" required>
                 </div>
                 <div class="row mb-3 justify-content-center">
+                    <input type="hidden" name="next" value="{{request.args.get('next')}}">
                     <button type="submit" class="btn btn-primary btn-lg">Register</button>
                 </div>
                 <div class="mb-3 text-center">
-                    <p> already have an account? 
+                    <p> already have an account?
                         <a href="{{url_for('login')}}" class="btn btn-link p-0">Log in!</a>
                     </p>
                 </div>

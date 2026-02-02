@@ -1,2 +1,4 @@
 .venv/
 flask_session/
+fresh V2.db
+fresh.db

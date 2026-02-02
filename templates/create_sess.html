@@ -16,7 +16,7 @@ Log In
                     <h3 class="ms-3 mt-3">Log In</h3>
                 </div>
                 <div class="card-body mx-auto">
-                    <form>
+                    <form action="{{url_for('create_sess')}}" method = "POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control">
@@ -26,12 +26,12 @@ Log In
                             <input type="password" class="form-control">
                         </div>
                         <div class="row mb-3 justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg">Log in</button>
+                            <button type="submit" name="login_checkout" class="btn btn-primary btn-lg">Log in</button>
                         </div>
                         <div class="mb-3 text-center">
                             <p> dont have an account? 
                                 <!--confirm route to final checkout-->
-                                <a href="{{url_for('register', next='logged_checkout')}}" class="btn btn-link p-0">Register an account!</a>
+                                <a href="{{url_for('register', next = 'logged_checkout')}}" class="btn btn-link p-0">Register an account!</a>
                             </p>   
                         </div>
                     </form>

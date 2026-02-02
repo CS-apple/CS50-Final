@@ -8,7 +8,7 @@ function ready() {
 console.log("Hello from tools.js");
 //add event listener for counter
 display(retrieveCart());
-addEventListener(getLogout())
+getLogout()
 };
 
 display(retrieveCart());
@@ -36,14 +36,12 @@ function display(cart){
 
 //Get log in button 
 function getLogout(){
-    button = document.querySelector('#nav_logout')
-    return button
+    const button = document.querySelector('.nav_logout');
+    if (button){
+            button.addEventListener("click", logout)
+    }
 };
 
-function logout_listener(){
-    addEventListener(getLogout)
-};
-
-function logout(event){
+function logout(){
     sessionStorage.clear()
 }

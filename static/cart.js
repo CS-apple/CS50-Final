@@ -35,8 +35,7 @@ function EnableCheckout(status){
 //CHECKOUT AND SEND TO BACK
 function Checkout(event){
     addPickupDateToCheckout();
-    window.location.href = "/create_sess"
-//    checkoutData();
+    checkoutData();
 //ENTER VALIDATION WITH FLASK
 };
 
@@ -302,23 +301,25 @@ function addPickupDateToCheckout() {
 };
 
 // SEND JSON TO FLASK
-// async function checkoutData() {
-//    try {
-//    const response = await fetch('/recieve_json', {
-//        method: 'POST',
-//        headers: {
-//            'Content-Type': 'application/json',
-//        },
-//        body: JSON.stringify({
-//            cart: retrieveCart()
-//        })
-//
-//    });
-//
-//    const result = await response.json();
-//    console.log ("Server response:", result);
-//    } catch (error) {
-//        console.error("Checkout failed:", error);
-//    }
-//
-//}
+ async function checkoutData() {
+    try {
+    const response = await fetch('/recieve_json', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            cart: retrieveCart()
+        })
+    });
+    const result = await response.json();
+    if (!response.ok){
+        alert("Error: "+result.message);
+        return;
+    }
+    window.location.href='/create_sess';
+    console.log ("Server response:", result);
+    } catch (error) {
+        console.error("Checkout failed:", error);
+    }
+}

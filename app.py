@@ -271,10 +271,15 @@ def logged_checkout():
         flash("Your order has been placed for date", 'alert-success' )
         return render_template("index.html") 
     else: 
-        #if GET check if user_ID in session,
+        #if GET check if user_ID & cartin session,
         if 'userID'in session and 'cart' in session:
-            #go to logged checkout
-            return render_template('logged_checkout.html')
+            order_data = session.get('cart',[])
+            total_price=0
+            date = None
+            for box in order_data:
+                total_price += box['price']
+                date = box['date']
+            return render_template('logged_checkout.html', orders=order_data, total=total_price, pickup_date=date )
         else:
             return redirect(url_for('cart')) 
     
@@ -296,7 +301,7 @@ def recieve_json():
     #loop cart for box info 
     for box in cart:
         #dont need box name 
-        #box_name = box.get('name')
+        box_name = box.get('name')
        # price = box.get('price')
         price = int(1599)
         #everybox is priced at 1599/100 so maybe dont get price 
@@ -315,21 +320,20 @@ def recieve_json():
             }), 400
 
         box_details = {
-            #"name":box_name,
+            "name":box_name,
             "price":price,
             "date":delivery_date,
-            "items":[],
+            "items":{},
         }
         print(f"Validating box priced at ${price} for pickup ${delivery_date}")
 
-        for detail in box.get('items', []):
+        for detail in box.get('items', {}):
             #match with flavors in db 
             doughnut = detail.get('flavor')
-            flavor = db.execute('SELECT doughnut_id FROM doughnuts WHERE ? = doughnut_name', detail.get('flavor')
+            flavor = db.execute('SELECT doughnut_name FROM doughnuts WHERE ? = doughnut_name', detail.get('flavor')
             )
             # error if strings dont match
-
-            if len(flavor) !=1 : 
+            if len(flavor) != 1 : 
                 return jsonify({
                     "error": "Validation failed",
                     "message": f"Product {doughnut} is invalid."
@@ -343,18 +347,16 @@ def recieve_json():
                     "error": "Validation failed",
                     "message": f"quantity is invalid."
                 }),400
-            print(f" - packaged {quantity} of {flavor}")
+            #print(f" - packaged {quantity} of {flavor}")
             #get append to box item list
-            box_details['items'].append({
-                "flavor":flavor,
-                "quantity":quantity
-            })
+            flavor_name = flavor[0]["doughnut_name"]
+            box_details['items'][flavor_name]=quantity
         #append complete box to session_Cart
         #print(f"flavors in box {box_details['items']}")
         session_cart.append(box_details) 
     #check session cart against DB  
     session['cart']= session_cart
-    print(f"created cart session {session['cart']}")
+    print(f"created cart session {session}")
     return jsonify({"status": "success", "message": "Order Processed", "redirect_url": "create_sess.html"}), 200
 
 if __name__ == "__main__":

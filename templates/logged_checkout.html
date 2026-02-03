@@ -19,56 +19,26 @@
                 <div class="card-header">
                     <h3 class="ms-3 mt-3">Your Cart</h3>
                 </div>
+                {{% for box in order %}}
                 <div class="card-body">
                     <div class="row mt-3">
                         <div class ="d-flex justify-content-between align-items-center">
-                            <h5>Item Name</h5>
-                            <h5>$15.00</h5>
+                            <h5>{{name}}</h5>
+                            <h5>${{"%.2f" price / 100 }}</h5>
                         </div>
+                        {{% for flavor, qty in box.items.items() %}}
                         <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
+                            <p class="mb-0">{{flavor}}</p>
+                            <p class="mb-0">{{qty}}</p>
                         </div>
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div>
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div> 
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <h5>Item Name</h5>
-                            <h5>$15.00</h5>
-                        </div>
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div>
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div>
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div> 
-                        <div class ="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">Doughnut</p>
-                            <p class="mb-0">3</p>
-                        </div>   
-                    </div>
-                </div>
+                        {{% endfor %}}
+                {{% endfor %}}
                 <div class="card-footer text-end">
-                    <h5>Total: $30.00</h5>
-                    <p>Pickup Date: <span>06/11/1993</span></p>
-                </div>    
+                {[% total block%]}
+                    <h5>Total: ${{"%.2f" total / 100 }}</h5>
+                    <p>Pickup Date: <span>{{ pickup_date }}</span></p>
+                </div> 
+                {{% end block %}}   
             </div>
         </div>
 <!-- check out form Right side -->

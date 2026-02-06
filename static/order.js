@@ -178,7 +178,7 @@ function addToCart(order){
         let newOrder = new CartItem(
             counter(),
             boxname(),
-            15.99,
+            1599/100,
             order,);
         // save to local 
         cart.push(newOrder);

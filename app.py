@@ -1,4 +1,5 @@
 import os
+import re
 
 from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
 from cs50 import SQL
@@ -10,7 +11,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 #configure db
-db = SQL("sqlite:///db.db")
+db = SQL("sqlite:///db2.db")
 
 #configure session
 app.config["SESSION_PERMANENT"] = False
@@ -268,6 +269,9 @@ def create_sess():
 def logged_checkout():
     #get next in case of input errors 
     if request.method == "POST":
+        #save to orders (userid, total price, pickupdate, status code 0)
+        #save to order_items where order_detals match order_id (product code )
+        #save to boxes where order_details = order_detail id
         flash("Your order has been placed for date", 'alert-success' )
         return render_template("index.html") 
     else: 
@@ -278,16 +282,12 @@ def logged_checkout():
             date = None
             for box in order_data:
                 total_price += box['price']
-                date = box['date']
-            return render_template('logged_checkout.html', orders=order_data, total=total_price, pickup_date=date )
+                date = datetime.strptime(box['date'], '%Y-%m-%d')
+                fdate = date.strftime('%m/%d/%Y')
+            print(order_data)
+            return render_template("logged_checkout.html", order=order_data, total=total_price, pickup_date=fdate )
         else:
-            return redirect(url_for('cart')) 
-    
-# GUEST CHECKOUT 
-@app.route("/guest_checkout", methods = ["GET","POST"])
-def guest_checkout():
-    if request.method == "GET":
-        return render_template("guest_checkout.html")  
+            return redirect(url_for('cart'))    
 
 # RECIEVE JSON
 @app.route("/recieve_json", methods = ["POST"])
@@ -300,15 +300,52 @@ def recieve_json():
     session_cart = []
     #loop cart for box info 
     for box in cart:
+        counter = 1
         #dont need box name 
+        #ignore box inputted box name and return db product_id
         box_name = box.get('name')
-       # price = box.get('price')
-        price = int(1599)
-        #everybox is priced at 1599/100 so maybe dont get price 
-        # convert price to floatx100, convert result to int
-        #except value error,
-        #if value error, set price to box price
-        #if match save value, else return error
+        #regex to remove numbers and spaces, normalize to Custom Box
+        db_name = re.sub(r"\s+\d+$","", box_name).strip()
+        print(f"match to {db_name}")
+        #check name matches Custom Box
+        if db_name == "Custom box":
+            #get product code from db
+            product_code = db.execute(
+                'SELECT product_id FROM product_codes WHERE product_name = ?', db_name
+            )
+            product_name = db.execute(
+                'SELECT product_name FROM product_codes WHERE product_name = ?', db_name
+            )
+        #error id not match
+        else:
+            return jsonify({
+                "error": "Validation Failed",
+                "message": f"name not Custom box"
+            }), 400
+        #use name from product codes table
+        #query table against product codes, product id, price
+        price =box.get('price')
+        try:
+            #normalize price(remove . ) 
+            convert_price = int(100 * price)
+        except ValueError:
+            return jsonify({
+                "error": "Validation Failed",
+                "message": f"price not a number"
+            }), 400
+        # covert prrice to int
+        print(f"price as int {convert_price}")
+        #get price from db
+        product_price = db.execute(
+            'SELECT price FROM product_codes WHERE product_id = ?', product_code[0]['product_id']
+        )
+        print(f"db price {product_price[0]['price']}")
+        if convert_price != product_price[0]['price']:
+            return jsonify({
+                "error": "Validation Failed",
+                "message": f"price altered"
+            }), 400
+        #use db price
         delivery_date = box.get('date')
         format_date = '%Y-%m-%d'
         try:
@@ -320,12 +357,13 @@ def recieve_json():
             }), 400
 
         box_details = {
-            "name":box_name,
-            "price":price,
+            "name": f"{product_name[0]['product_name']} {str(counter)}",
+            "price":product_price[0]['price'],
             "date":delivery_date,
             "items":{},
         }
-        print(f"Validating box priced at ${price} for pickup ${delivery_date}")
+        counter += 1
+        print(f"Validating ${product_name[0]['product_name']} priced at ${product_price[0]['price']} for pickup ${delivery_date}")
 
         for detail in box.get('items', {}):
             #match with flavors in db 

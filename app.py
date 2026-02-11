@@ -72,7 +72,8 @@ def login():
             return render_template("login.html")
         #cross check associated id in hash
         if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
-            session["userID"] = password[0].get("session_id")
+
+            session["userID"] = email[0].get("user_id")
             flash("login success", 'alert-success')
             return redirect(url_for('index'))
         #else flash error 
@@ -153,10 +154,12 @@ def register():
                 'INSERT INTO hash (user,password_hash) VALUES (?, ?)', user_val, generate_password_hash(request.form.get("password"), method ='pbkdf2') 
             )
             #session user id = sessions id 
-            session["userID"] =  sessionID
+            session["userID"] = userID
             #if user has a cart in sessions storrage,
             #redirect to homepage
             flash('account registration successful','alert-success')
+            if next_page == None:
+                return redirect(url_for('index'))
             return redirect(url_for(next_page) if next_page else url_for('index'))
         else:
             flash('passwords do not match', 'alert-danger')
@@ -206,9 +209,55 @@ def guest():
 #ADMIN
 @app.route("/admin", methods = ["GET", "POST"])
 def admin():
-    if request.method == "GET":
+    if request.method == "POST":        
+        #email is not empty
+        if not request.form.get('email'):
+            flash("please enter your credentials", 'alert-danger')
+            return render_template("index.html")
+
+        #password not empty
+        if not request.form.get('password'):
+            flash('please enter your password credentials', 'alert-danger')
+            return render_template("index.html")
+        
+        #check for unique email in db
+        email = db.execute(
+            'SELECT * FROM user WHERE email = ? AND is_admin = 1', request.form.get("email")
+        )
+        print(f"user row: {email}")
+        #if email not found render message
+        if len(email)  != 1:
+            flash("not an admin?","alert-primary")
+            return render_template("index.html")
+        #check if user_id has a password
+        password = db.execute(
+            'SELECT * FROM hash WHERE user = ?', email[0].get('user_id')
+        )
+        if len(password) != 1:
+            flash(" incorrect password", "alert-danger")
+            return render_template("index.html")
+        #cross check associated id in hash
+        if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
+
+            session["userID"] = email[0].get("user_id")
+            session["admin"] = True
+            flash(" success", 'alert-success')
+            return redirect(url_for('admin_dash'))
+        #else flash error 
+        else:
+            flash("incorrect password")
+            return render_template("admin.html")
+    else:
         return render_template("admin.html")
     
+#ADMIN DASHBOARD
+@app.route("/admin_dash", methods = ["GET", "POST"])
+def admin_dash():
+    if request.method == "POST":
+        return render_template('admin_dash.html')
+    else:
+        return render_template('admin_dash.html')
+
 #CART
 @app.route("/cart", methods = ["GET","POST"])
 def cart():
@@ -248,7 +297,7 @@ def create_sess():
             return render_template(url_for('create_sess'))
         #cross check associated id in hash
         if check_password_hash(password[0].get("password_hash"), request.form.get('password')):
-            session["userID"] = password[0].get("session_id")
+            session["userID"] = email[0].get("user_id")
             flash('login success', 'alert-success')
             return redirect(url_for('logged_checkout'))
         #else flash error 
@@ -269,22 +318,54 @@ def create_sess():
 def logged_checkout():
     #get next in case of input errors 
     if request.method == "POST":
-        #save to orders (userid, total price, pickupdate, status code 0)
+        #save to orders (userid, total price, pickup_date, status code 0)
+        order_data = session.get('cart',[])
+        user_info = session.get('userID', [])
+        total_price=int(0)
+        total = 0 
+        date=None
+        for box in order_data:
+            total_price += int(box['price'])/100
+            date = datetime.strptime(box['date'], '%Y-%m-%d')
+            fdate = date.strftime('%m/%d/%Y')
+        #regex to remove numbers and spaces, normalize to Custom Box
+            box_name = re.sub(r"\s+\d+$","", box['name']).strip()        
+        order_id = db.execute(
+            'INSERT INTO orders (user, total, pickup_date, status_code) values (?,?,?,?)', user_info, total_price, fdate, 1
+        )
         #save to order_items where order_detals match order_id (product code )
-        #save to boxes where order_details = order_detail id
-        flash("Your order has been placed for date", 'alert-success' )
-        return render_template("index.html") 
+        product_code = db.execute(
+            'SELECT product_id FROM product_codes WHERE product_name = ?', box_name
+        )
+        order_item = db.execute(
+            'INSERT INTO order_items (order_id, product_code) values (?,?)', order_id, product_code[0]['product_id']
+        )
+        for flavor, amount in box['items'].items():
+            item = flavor
+            quantity = int(amount)
+            doughnut = db.execute(
+                'SELECT doughnut_id from doughnuts WHERE doughnut_name = ?', item
+            )
+            #save to boxes where order_details = order_detail id
+            item_detail = db.execute(
+                'INSERT INTO boxes (order_details, items, quantity) VALUES (?,?,?)', order_item, doughnut[0]['doughnut_id'], quantity 
+            )
+        #if checkout success, clear session cart, remove JSON cart 
+        session.clear()
+        flash("Your order has been placed", 'alert-success' )
+        return redirect(url_for('index', clear_storage = 'true' ))
     else: 
         #if GET check if user_ID & cartin session,
         if 'userID'in session and 'cart' in session:
             order_data = session.get('cart',[])
-            total_price=0
+            total_price=int(0)
             date = None
             for box in order_data:
-                total_price += box['price']
+                total_price += int(box['price'])
                 date = datetime.strptime(box['date'], '%Y-%m-%d')
                 fdate = date.strftime('%m/%d/%Y')
             print(order_data)
+            print(f"price: {total_price}")
             return render_template("logged_checkout.html", order=order_data, total=total_price, pickup_date=fdate )
         else:
             return redirect(url_for('cart'))    
@@ -358,7 +439,7 @@ def recieve_json():
 
         box_details = {
             "name": f"{product_name[0]['product_name']} {str(counter)}",
-            "price":product_price[0]['price'],
+            "price":int(product_price[0]['price']),
             "date":delivery_date,
             "items":{},
         }

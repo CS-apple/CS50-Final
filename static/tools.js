@@ -7,12 +7,13 @@ if (document.readystate == 'loading') {
 function ready() {
 console.log("Hello from tools.js");
 //add event listener for counter
+checkout_success();
 display(retrieveCart());
-getLogout()
+getLogout();
 };
 
 display(retrieveCart());
-
+checkout_success();
 
 //Get JSON 
 function retrieveCart(){
@@ -44,4 +45,16 @@ function getLogout(){
 
 function logout(){
     sessionStorage.clear()
+}
+
+//CHECKOUT SUCCESS
+function checkout_success() {
+    console.log("check for flag")
+    const url_flag = new URLSearchParams(window.location.search);
+    if (url_flag.get('clear_storage') === 'true') {
+        console.log("flag found")
+        sessionStorage.clear();
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+    }
 }

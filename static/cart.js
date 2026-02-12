@@ -312,12 +312,15 @@ function addPickupDateToCheckout() {
             cart: retrieveCart()
         })
     });
+    
     const result = await response.json();
     if (!response.ok){
         alert("Error: "+result.message);
         return;
     }
+
     window.location.href='/create_sess';
+
     console.log ("Server response:", result);
     } catch (error) {
         console.error("Checkout failed:", error);

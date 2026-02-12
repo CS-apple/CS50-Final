@@ -158,7 +158,7 @@ def register():
             #if user has a cart in sessions storrage,
             #redirect to homepage
             flash('account registration successful','alert-success')
-            if next_page == None:
+            if next_page == 'None':
                 return redirect(url_for('index'))
             return redirect(url_for(next_page) if next_page else url_for('index'))
         else:
@@ -254,9 +254,54 @@ def admin():
 @app.route("/admin_dash", methods = ["GET", "POST"])
 def admin_dash():
     if request.method == "POST":
-        return render_template('admin_dash.html')
+        form_row = request.form.get('order_id')
+        status = request.form.get('status_code')
+        #query if order_id.status_code = statusthen  then dont update
+        curr_status = db.execute(
+            'SELECT status_code FROM orders WHERE order_id = ?', form_row
+        )
+        if curr_status is not None and int(curr_status[0]['status_code']) == int(status):
+                return redirect(url_for('admin_dash'))
+        if 0 <= int(status) <=4:
+            update_status = db.execute(
+                'Update orders SET status_code = ? WHERE order_id = ?', status, form_row
+            )
+            if update_status == 1:
+                flash("updated row status", 'alert-success')
+                return redirect(url_for('admin_dash'))
+            else:
+                flash("error", 'alert-danger')
+                return redirect(url_for('admin_dash'))
+        else:
+            flash("status code error", 'alert-danger')
+            return redirect(url_for('admin_dash'))
     else:
-        return render_template('admin_dash.html')
+        pending_orders = db.execute(
+            '''SELECT
+            orders.order_id, 
+            user.first_name, 
+            user.last_name, 
+            user.email, 
+            user.phone, 
+            orders.total, 
+            orders.pickup_date, 
+            orders.status_code, 
+            (
+                SELECT GROUP_CONCAT ( boxes.quantity || 'x ' || doughnuts.doughnut_name, ' | ') 
+                FROM order_items 
+                INNER JOIN boxes ON boxes.order_details = order_items.detail_id 
+                INNER JOIN doughnuts ON boxes.items = doughnuts.doughnut_id 
+                WHERE order_items.order_id = orders.order_id 
+            ) AS items 
+        FROM orders 
+        INNER JOIN user ON orders.user = user.user_id 
+        WHERE orders.status_code < 3 
+        GROUP BY orders.order_id 
+        ORDER BY orders.pickup_date 
+        LIMIT 20;'''
+        )
+        print(f"order table: {pending_orders}")
+        return render_template('admin_dash.html', orders = pending_orders)
 
 #CART
 @app.route("/cart", methods = ["GET","POST"])
@@ -309,6 +354,7 @@ def create_sess():
             flash("Create a cart to checkout", "alert-primary")
             return redirect(url_for('cart'))
         elif 'userID' in session and 'cart' in session:
+            #return render_template("logged_checkout.html")
             return render_template("logged_checkout.html")
         else:
             return render_template("create_sess.html")  
@@ -326,6 +372,7 @@ def logged_checkout():
         date=None
         for box in order_data:
             total_price += int(box['price'])/100
+            print(f"total price: ${total_price}")
             date = datetime.strptime(box['date'], '%Y-%m-%d')
             fdate = date.strftime('%m/%d/%Y')
         #regex to remove numbers and spaces, normalize to Custom Box

@@ -12,11 +12,16 @@ Admin Dashboard
         </div>
     </div>
     <div class="row">
-        <div class="">
-            <table class="table table-hover">
+        <div class=""> 
+             {% for row in orders %}
+             <form action="{{url_for('admin_dash')}}" method = "post" id="{{row.order_id}}" >
+                <input type="hidden" name="order_id" value="{{ row.order_id }}">
+             </form>
+             {% endfor %}
+            <table class="table table-hover"> 
                 <thead>
                     <tr>
-                    <th scope="col">order_#</th>
+                    <th scope="col">order</th>
                     <th scope="col">user_id</th>
                     <th scope="col">Total</th>
                     <th scope="col">Date</th>
@@ -25,23 +30,37 @@ Admin Dashboard
                     </tr>
                 </thead>
                 <tbody>
+                    {% for row in orders %}
                     <tr>
-                    <th scope="row">{{order}}</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
+                    <th scope="row" class="text-center align-middle">{{row.order_id}}</th>
+                    <td class="align-middle">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item p-0">{{row.first_name}} , {{row.last_name}}</li>
+                            <li class="list-group-item p-0">{{row.email}}</li>
+                            <li class="list-group-item p-0">{{row.phone}}</li>
+                        </ul>
+                    </td>
+                    <td class="align-middle">{{row.total}}</td>
+                    <td class="align-middle">{{row.pickup_date}}</td>
+                    <td class="align-middle">
+                        <ul class="list-group list-group-flush">
+                            {% for item in row['items'].split(' | ') %}
+                                <li class="list-group-item p-0">{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="align-middle">
+                        <div class=" d-flex xalign-items-center">
+                            <select class="form-control me-2" form="{{row.order_id}}" name="status_code">
+                                <option value="1" {{ "selected" if row.status_code == 1 }} >Recieved</option>
+                                <option value="2" {{ "selected" if row.status_code == 2 }}>Pending</option>
+                                <option value="3" {{ "selected" if row.status_code == 3 }}>Ready</option>
+                                <option value="4" {{ "selected" if row.status_code == 4 }}>Picked up</option>
+                            </select>
+                            <button form="{{row.order_id}}" type="submit" class="rowbtn btn btn-sm btn-primary"> Update</button>
+                        </div>
+                    </td>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

@@ -1,5 +1,5 @@
 # Michelle's Dough
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <[URL HERE](https://youtu.be/1XhET9B0MXk)>
 #### Description: My webapp featuring a checkout flow for a local pickup artisanal doughnut shop. Build a mix and match box of a dozen doughnuts for pickup on a date in the near future. 
 
 ## Overview: Michelle's Dough

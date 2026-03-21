@@ -220,7 +220,7 @@ function editOrder(cartData) {
         for (let j = 0; j < cartData[0].items.length; j++){ 
         console.log(cartData[0].items[j].flavor);
             if (flavor.innerHTML === cartData[0].items[j].flavor){
-                //if match get value from cart data update ofrm data 
+                //if match get value from cart data update form data 
                 let editValue = cartData[0].items[j].quantity;
                 console.log(editValue);
                 //change html value to value 

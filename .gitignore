@@ -2,3 +2,8 @@
 flask_session/
 fresh V2.db
 fresh.db
+templates/order1.html
+templates/1index.html
+templates/admindash.html
+templates/guest_checkout.html
+static/tools1.js

@@ -301,6 +301,7 @@ function addPickupDateToCheckout() {
 };
 
 // SEND JSON TO FLASK
+//Used Google Gemini to get an idea of how async fetch statements work 
  async function checkoutData() {
     try {
     const response = await fetch('/recieve_json', {

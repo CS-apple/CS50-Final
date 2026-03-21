@@ -123,7 +123,7 @@ def register():
             return render_template("register.html")
         # match password
         if request.form.get('password') != request.form.get('confirmation'):
-            flash('Passwords need to match', 'alert-danger')            
+            flash('Passwords must match', 'alert-danger')            
             return render_template("register.html")
         #query phone in db 
         phone = db.execute(
@@ -157,12 +157,12 @@ def register():
             session["userID"] = userID
             #if user has a cart in sessions storrage,
             #redirect to homepage
-            flash('account registration successful','alert-success')
+            flash('Account registration successful','alert-success')
             if next_page == 'None':
                 return redirect(url_for('index'))
             return redirect(url_for(next_page) if next_page else url_for('index'))
         else:
-            flash('passwords do not match', 'alert-danger')
+            flash('Passwords do not match!', 'alert-danger')
             render_template("register.html", next = next_page)
     else: 
         return render_template("register.html")
@@ -418,6 +418,7 @@ def logged_checkout():
             return redirect(url_for('cart'))    
 
 # RECIEVE JSON
+#Google gemini assisted with the fetch statement. 
 @app.route("/recieve_json", methods = ["POST"])
 def recieve_json():
     data = request.get_json()
